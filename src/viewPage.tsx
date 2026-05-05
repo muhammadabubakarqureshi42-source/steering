@@ -1,27 +1,25 @@
-const { BACKEND_URL } = import.meta.env;
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FiPhone, FiShare2, FiHeart, FiChevronLeft, FiChevronRight,
+   FiChevronLeft, FiChevronRight,
   FiCheck, FiAlertCircle, FiClock, FiUser, FiShield,
-  FiBarChart2, FiList, FiEye, FiCalendar, FiInfo,
-  FiArrowLeft, FiDownload
+   FiList, FiEye, FiCalendar, FiInfo,
+
 } from "react-icons/fi";
-import { FaGooglePlay, FaShieldAlt, FaWhatsapp } from "react-icons/fa";
+import { FaGooglePlay, FaShieldAlt,  } from "react-icons/fa";
 import { MdVerified, MdDirectionsCar, MdLocationOn, MdOutlineCategory } from "react-icons/md";
 import { RiCarLine, RiShieldCheckLine } from "react-icons/ri";
 import {
-  BsGraphUp, BsFillStarFill, BsChatDotsFill,
+  BsGraphUp, BsFillStarFill, 
   BsLightningChargeFill, BsPalette, BsSpeedometer2, BsFuelPump
 } from "react-icons/bs";
 import { IoCarSportOutline, IoConstructOutline } from "react-icons/io5";
 import { GiCarWheel, GiGearStickPattern } from "react-icons/gi";
 import { TbEngine, TbManualGearbox } from "react-icons/tb";
 import { useParams } from "react-router-dom";
-import { footer } from "framer-motion/m";
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 
-const AUTH_TOKEN = ""; // paste your Bearer token here if needed
 
 const RATING_CATEGORIES: { label: string; key: string; icon: React.ReactNode }[] = [
     { label: "Overall",    key: "overall_rating",    icon: <BsFillStarFill /> },
@@ -89,7 +87,6 @@ export default function ViewAdPage() {
   const [loading, setLoading]     = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeImg, setActiveImg] = useState(0);
-  const [saved, setSaved]         = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {

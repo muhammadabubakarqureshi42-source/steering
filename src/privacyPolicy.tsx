@@ -3,57 +3,31 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FiMenu,
   FiX,
-  FiChevronRight,
-  FiDownload,
   FiPhone,
-  FiMail,
-  FiTwitter,
-  FiInstagram,
-  FiFacebook,
-  FiLinkedin,
-  FiList,
-  FiAward,
-  FiBarChart2,
-  FiEye,
   FiLock,
-  FiSliders,
   FiUserCheck,
-  FiTrash2,
-  FiRefreshCw,
   FiGlobe,
 } from "react-icons/fi";
 import {
   FaGooglePlay,
-  FaApple,
   FaShieldAlt,
-  FaWhatsapp,
   FaCookieBite,
   FaUserSecret,
   FaChild,
 } from "react-icons/fa";
 import {
-  MdVerified,
   MdDirectionsCar,
-  MdSecurity,
   MdOutlinePrivacyTip,
   MdDataUsage,
 } from "react-icons/md";
 import {
-  RiCarLine,
-  RiSearchEyeLine,
-  RiPriceTag3Line,
   RiCustomerServiceLine,
-  RiShieldCheckLine,
   RiShareLine,
 } from "react-icons/ri";
 import {
-  BsGraphUp,
-  BsFillStarFill,
-  BsLightningChargeFill,
   BsDatabase,
 } from "react-icons/bs";
 import {
-  HiOutlineBadgeCheck,
   HiSparkles,
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";

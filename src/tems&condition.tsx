@@ -1,43 +1,29 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect,  } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiMenu,
   FiX,
-  FiChevronRight,
-  FiDownload,
-  FiPhone,
-  FiMail,
-  FiTwitter,
-  FiInstagram,
-  FiFacebook,
-  FiLinkedin,
-  FiList,
-  FiAward,
-  FiBarChart2,
+  
 } from "react-icons/fi";
 import {
   FaGooglePlay,
-  FaApple,
   FaShieldAlt,
-  FaWhatsapp,
+  
 } from "react-icons/fa";
 import {
   MdVerified,
-  MdLocationOn,
+  
   MdDirectionsCar,
   MdSecurity,
 } from "react-icons/md";
 import {
   RiCarLine,
-  RiSearchEyeLine,
   RiPriceTag3Line,
   RiCustomerServiceLine,
   RiShieldCheckLine,
 } from "react-icons/ri";
 import {
-  BsGraphUp,
   BsFillStarFill,
-  BsLightningChargeFill,
   BsShieldCheck,
 } from "react-icons/bs";
 import {
@@ -46,12 +32,6 @@ import {
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
-const NAV_LINKS = [
-  { label: "Features", href: "#features", icon: <BsLightningChargeFill /> },
-  { label: "How It Works", href: "#how-it-works", icon: <RiSearchEyeLine /> },
-  { label: "About", href: "#about", icon: <HiOutlineBadgeCheck /> },
-  { label: "Download", href: "#download", icon: <FiDownload /> },
-];
 
 
 const TERMS_SECTIONS = [

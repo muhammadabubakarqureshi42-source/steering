@@ -4,7 +4,6 @@ import {
   useScroll,
   useTransform,
   AnimatePresence,
-  inView,
 } from "framer-motion";
 import {
   FiSearch,
@@ -13,11 +12,9 @@ import {
   FiChevronRight,
   FiUser,
   FiList,
-  FiAward,
   FiBarChart2,
   FiClock,
   FiPhone,
-  FiMail,
   FiTwitter,
   FiInstagram,
   FiFacebook,
@@ -28,10 +25,7 @@ import {
 import {
   FaGooglePlay,
   FaApple,
-  FaCarSide,
   FaCar,
-  FaRegStar,
-  FaStar,
   FaWhatsapp,
   FaCheckDouble,
   FaShieldAlt,
@@ -41,20 +35,14 @@ import {
 } from "react-icons/fa";
 import {
   MdVerified,
-  MdPriceCheck,
   MdSpeed,
-  MdSecurity,
-  MdOutlineSupport,
   MdLocationOn,
   MdDirectionsCar,
 } from "react-icons/md";
 import {
   RiCarLine,
   RiSearchEyeLine,
-  RiPriceTag3Line,
-  RiSecurePaymentLine,
   RiCustomerServiceLine,
-  RiShieldCheckLine,
 } from "react-icons/ri";
 import {
   BsGraphUp,
@@ -65,12 +53,9 @@ import {
   BsShieldCheck,
 } from "react-icons/bs";
 import {
-  HiOutlineLocationMarker,
   HiOutlineBadgeCheck,
   HiSparkles,
 } from "react-icons/hi";
-import { TbBrandGooglePlay } from "react-icons/tb";
-import { IoCarSportOutline, IoStarOutline } from "react-icons/io5";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features", icon: <BsLightningChargeFill /> },
