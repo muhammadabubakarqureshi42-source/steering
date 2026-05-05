@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as  Routes, Route } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import ViewAdPage from "./viewPage";
 import TermsAndConditions from "./tems&condition";

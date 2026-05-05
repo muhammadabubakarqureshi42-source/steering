@@ -264,7 +264,6 @@ export default function PrivacyPolicy() {
         const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("overview");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -277,7 +276,6 @@ export default function PrivacyPolicy() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
           }
         });
       },

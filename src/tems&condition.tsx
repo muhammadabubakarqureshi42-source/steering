@@ -245,7 +245,6 @@ export default function TermsAndConditions() {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState("acceptance");
 
     useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -258,7 +257,6 @@ export default function TermsAndConditions() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
           }
         });
       },
