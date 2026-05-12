@@ -1,1768 +1,618 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import backgroundImg from "./assets/background.png";
+
+// lucide-react
 import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
-import {
-  FiSearch,
-  FiMenu,
-  FiX,
-  FiChevronRight,
-  FiUser,
-  FiList,
-  FiBarChart2,
-  FiClock,
-  FiPhone,
-  FiTwitter,
-  FiInstagram,
-  FiFacebook,
-  FiLinkedin,
-  FiArrowRight,
-  FiDownload,
-} from "react-icons/fi";
-import {
-  FaGooglePlay,
-  FaApple,
-  FaCar,
-  FaWhatsapp,
-  FaCheckDouble,
-  FaShieldAlt,
-  FaTools,
-  FaClipboardCheck,
-  FaCheckCircle,
-} from "react-icons/fa";
-import {
-  MdVerified,
-  MdSpeed,
-  MdLocationOn,
-  MdDirectionsCar,
-} from "react-icons/md";
-import {
-  RiCarLine,
-  RiSearchEyeLine,
-  RiCustomerServiceLine,
-} from "react-icons/ri";
-import {
-  BsGraphUp,
-  BsFillStarFill,
-  BsChatDotsFill,
-  BsCheckCircleFill,
-  BsLightningChargeFill,
-  BsShieldCheck,
-} from "react-icons/bs";
-import {
-  HiOutlineBadgeCheck,
-  HiSparkles,
-} from "react-icons/hi";
+  MapPin, ShieldCheck, Search, FileCheck2,
+  ArrowLeftRight, Wrench, Headphones, 
+  Users, Car, BadgeCheck, Building2,
+} from "lucide-react";
 
-const NAV_LINKS = [
-  { label: "Features", href: "#features", icon: <BsLightningChargeFill /> },
-  { label: "How It Works", href: "#how-it-works", icon: <RiSearchEyeLine /> },
-  { label: "About", href: "#about", icon: <HiOutlineBadgeCheck /> },
-  { label: "Download", href: "#download", icon: <FiDownload /> },
-];
+// react-icons
+import { BiBell } from "react-icons/bi";
+import { FaApple, FaGooglePlay, FaWhatsapp } from "react-icons/fa";
+import { AiOutlineInstagram } from "react-icons/ai";
+import { TbBrandFacebook } from "react-icons/tb";
 
-const FEATURES = [
-  {
-    icon: <FaCar size={28} />,
-    title: "Buy & Sell Instantly",
-    desc: "List your car in under 2 minutes or browse thousands of verified listings across Pakistan.",
-    color: "#0052cc",
-    bg: "linear-gradient(135deg, #e8f0ff 0%, #d0e3ff 100%)",
-  },
-  {
-    icon: <RiSearchEyeLine size={28} />,
-    title: "Smart Search Filters",
-    desc: "Filter by make, model, year, city, price range, mileage and more — find your perfect match.",
-    color: "#0369a1",
-    bg: "linear-gradient(135deg, #e0f5ff 0%, #bae8ff 100%)",
-  },
-  {
-    icon: <MdVerified size={28} />,
-    title: "Verified Listings",
-    desc: "Every listing goes through our trust verification process so you can buy with confidence.",
-    color: "#16a34a",
-    bg: "linear-gradient(135deg, #e0fdf4 0%, #bbf7d0 100%)",
-  },
-  {
-    icon: <BsShieldCheck size={28} />,
-    title: "Inspection Service",
-    desc: "Get your vehicle inspected by certified experts with a complete report to ensure safety, quality, and transparency before buying or selling.",
-    color: "#059669",
-    bg: "linear-gradient(135deg, #ecfdf5 0%, #6ee7b7 100%)",
-  },
-  {
-    icon: <BsChatDotsFill size={28} />,
-    title: "In-App Chat",
-    desc: "Connect directly with buyers and sellers through our secure in-app messaging system.",
-    color: "#7c3aed",
-    bg: "linear-gradient(135deg, #f5f3ff 0%, #ddd6fe 100%)",
-  },
-  {
-    icon: <FaTools size={28} />,
-    title: "Mechanic Services",
-    desc: "Access trusted mechanics for repairs, maintenance, and on-demand car services anytime, anywhere.",
-    color: "#2563eb",
-    bg: "linear-gradient(135deg, #eff6ff 0%, #93c5fd 100%)",
-  },
-];
-
-const STEPS = [
-  {
-    num: "01",
-    icon: <FiUser size={32} />,
-    title: "Create Your Account",
-    desc: "Sign up in seconds with your phone number or Google account. Free forever.",
-  },
-  {
-    num: "02",
-    icon: <RiCarLine size={32} />,
-    title: "Browse or List",
-    desc: "Search thousands of cars or post your own listing with photos and details.",
-  },
-  {
-    num: "03",
-    icon: <FaCheckDouble size={32} />,
-    title: "Connect & Deal",
-    desc: "Chat with the seller, negotiate the price, and close the deal safely.",
-  },
-];
-
-const STATS = [
-  { value: "50K+", label: "Active Listings", icon: <RiCarLine size={22} /> },
-  { value: "200K+", label: "Happy Users", icon: <FiUser size={22} /> },
-  { value: "35+", label: "Cities Covered", icon: <MdLocationOn size={22} /> },
-  { value: "4.8★", label: "App Rating", icon: <BsFillStarFill size={22} /> },
-];
-
-const TESTIMONIALS = [
-  {
-    name: "Ahmed Raza",
-    city: "Karachi",
-    text: "Sold my Civic in 3 days! The Steering is so much better than other platforms. The interface is clean, fast, and the verified sellers gave me full confidence.",
-    avatar: "AR",
-    rating: 5,
-  },
-  {
-    name: "Sana Malik",
-    city: "Lahore",
-    text: "Finally found my dream car at the right price. The filters are amazing and the UI is super clean. I compared 40+ cars before deciding — made the whole thing stress-free.",
-    avatar: "SM",
-    rating: 5,
-  },
-  {
-    name: "Usman Khan",
-    city: "Islamabad",
-    text: "The verified listings feature gave me full confidence. No scams, no hassle. Pure gold. I've recommended it to everyone in my family. Best car app in Pakistan.",
-    avatar: "UK",
-    rating: 5,
-  },
-];
-
-const ABOUT_CARDS = [
-  {
-    label: "Average Sell Time",
-    value: "3 Days",
-    icon: <FiClock size={22} />,
-    dark: true,
-  },
-  {
-    label: "Listings Verified",
-    value: "98%",
-    icon: <MdVerified size={22} />,
-    dark: false,
-  },
-  {
-    label: "Cities Active",
-    value: "35+",
-    icon: <MdLocationOn size={22} />,
-    dark: false,
-  },
-  {
-    label: "Customer Rating",
-    value: "4.8 / 5",
-    icon: <BsFillStarFill size={22} />,
-    dark: true,
-  },
-];
-
-function useCountUp(
-  target: string,
-  duration: number = 2000,
-  start: boolean = false,
-): number {
-  const [count, setCount] = useState<number>(0);
-
-  useEffect(() => {
-    if (!start) return;
-
-    const parseValue = (val: string): number => {
-      if (val.includes("K")) return parseFloat(val) * 1000;
-      if (val.includes("M")) return parseFloat(val) * 1000000;
-      return parseFloat(val.replace(/[^0-9.]/g, ""));
-    };
-
-    const num: number = parseValue(target);
-    let startTime: number | null = null;
-
-    const step = (timestamp: number): void => {
-      if (startTime === null) startTime = timestamp;
-
-      const progress: number = Math.min((timestamp - startTime) / duration, 1);
-
-      setCount(Math.floor(progress * num));
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
-    };
-
-    requestAnimationFrame(step);
-  }, [target, duration, start]);
-
-  return count;
-}
+/* ─── Steering Wheel Logo ─────────────────────────────────────── */
+const SteeringLogo = ({ size = 44 }) => (
+  <svg width={size} height={size} viewBox="0 0 44 44" fill="none">
+    <circle cx="22" cy="22" r="20" stroke="#16a34a" strokeWidth="2.5" />
+    <circle cx="22" cy="22" r="6" stroke="#2563eb" strokeWidth="2" />
+    <line x1="22" y1="2"  x2="22" y2="16" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+    <line x1="22" y1="28" x2="22" y2="42" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+    <line x1="2"  y1="22" x2="16" y2="22" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+    <line x1="28" y1="22" x2="42" y2="22" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
+    <line x1="5.5"  y1="8"  x2="16" y2="17" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="38.5" y1="8"  x2="28" y2="17" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="5.5"  y1="36" x2="16" y2="27" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="38.5" y1="36" x2="28" y2="27" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
+  </svg>
+);
 
 function StatCard({
   value,
   label,
   icon,
+  accent,
+  ring,
+  delay,
   inView,
 }: {
   value: string;
   label: string;
   icon: React.ReactNode;
+  accent: string;
+  ring: string;
+  delay: number;
   inView: boolean;
 }) {
-  const count = useCountUp(value, 2000, inView);
-
-  // Convert raw number back to display format
-  const formatCount = (num: number, originalValue: string) => {
-    if (originalValue.includes("K")) return `${Math.floor(num / 1000)}K+`;
-    if (originalValue.includes("M")) return `${(num / 1000000).toFixed(1)}M+`;
-    // For "4.8★" — just show static value when done, count to 4
-    if (originalValue.includes("★")) return `${num}★`;
-    return `${num}+`;
-  };
   return (
-    <motion.div
-      whileHover={{ y: -4, scale: 1.02 }}
-      className="flex flex-col items-center gap-3 p-6 rounded-2xl"
+    <div
+      className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.04] px-4 py-7 text-center transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
       style={{
-        background: "rgba(255,255,255,0.06)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        backdropFilter: "blur(10px)",
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(20px)",
+        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms, background 0.25s, border-color 0.25s`,
       }}
     >
-      <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center"
-        style={{ background: "#81a9cb", color: "#025194" }}
-      >
+      <div className={`absolute inset-x-0 top-0 h-[2px] rounded-t-2xl bg-gradient-to-r ${accent} opacity-80`} />
+
+      <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${ring}`}>
         {icon}
       </div>
-      <div className="text-4xl md:text-5xl font-black text-[#68a4d7] tabular-nums tracking-tight">
-        {inView ? formatCount(count, value) : "0"}
-      </div>
-      <div className="text-sm text-blue-200 font-medium tracking-wider uppercase">
+
+      <p className="mb-2 text-[26px] font-semibold leading-none tracking-tight text-white">
+        {value}
+      </p>
+
+      <p className="text-[11.5px] font-medium uppercase tracking-widest text-white/40">
         {label}
-      </div>
-    </motion.div>
+      </p>
+    </div>
   );
 }
 
+/* ─── Step Illustrations ─────────────────────────────────────── */
+const ExploreSVG = () => (
+  <svg viewBox="0 0 200 200" className="w-full h-full" fill="none">
+    <circle cx="100" cy="100" r="52" fill="#dcfce7"/>
+    <circle cx="90" cy="92" r="26" fill="#fff" stroke="#16a34a" strokeWidth="3"/>
+    <circle cx="90" cy="92" r="18" fill="#f0fdf4"/>
+    <path d="M76 94 Q76 99 79 100 L101 100 Q104 99 104 94 L104 88 Q101 85 98 84 L96 78 Q95 76 92 76 L88 76 Q85 76 84 78 L82 84 Q78 85 76 88Z" fill="#16a34a"/>
+    <circle cx="80" cy="100" r="3.5" fill="#fff"/>
+    <circle cx="100" cy="100" r="3.5" fill="#fff"/>
+    <rect x="84" y="92" width="12" height="7" rx="1" fill="#bbf7d0" opacity="0.9"/>
+    <line x1="110" y1="112" x2="126" y2="128" stroke="#16a34a" strokeWidth="5" strokeLinecap="round"/>
+    <rect x="130" y="62" width="54" height="20" rx="10" fill="#fff" stroke="#bbf7d0" strokeWidth="1"/>
+    <circle cx="142" cy="72" r="4" fill="#fbbf24"/>
+    <rect x="149" y="68" width="30" height="3" rx="1.5" fill="#d1d5db"/>
+    <rect x="149" y="73" width="20" height="2" rx="1" fill="#e5e7eb"/>
+    <rect x="20" y="130" width="54" height="20" rx="10" fill="#fff" stroke="#bbf7d0" strokeWidth="1"/>
+    <circle cx="32" cy="140" r="4" fill="#34d399"/>
+    <rect x="39" y="136" width="28" height="3" rx="1.5" fill="#d1d5db"/>
+    <rect x="39" y="141" width="18" height="2" rx="1" fill="#e5e7eb"/>
+  </svg>
+);
+
+const ConnectSVG = () => (
+  <svg viewBox="0 0 200 200" className="w-full h-full" fill="none">
+    <circle cx="100" cy="100" r="52" fill="#dbeafe"/>
+    <circle cx="76" cy="85" r="16" fill="#2563eb"/>
+    <circle cx="76" cy="78" r="8" fill="#fff" opacity="0.3"/>
+    <path d="M62 102 Q62 95 76 95 Q90 95 90 102" fill="#1d4ed8"/>
+    <circle cx="124" cy="85" r="16" fill="#16a34a"/>
+    <circle cx="124" cy="78" r="8" fill="#fff" opacity="0.3"/>
+    <path d="M110 102 Q110 95 124 95 Q138 95 138 102" fill="#15803d"/>
+    <circle cx="88" cy="72" r="4" fill="#22c55e" stroke="#eff6ff" strokeWidth="1.5"/>
+    <circle cx="136" cy="72" r="4" fill="#22c55e" stroke="#eff6ff" strokeWidth="1.5"/>
+    <rect x="66" y="112" width="68" height="16" rx="8" fill="#2563eb"/>
+    <text x="100" y="123" textAnchor="middle" fontSize="7" fill="#fff" fontWeight="600" fontFamily="sans-serif">35 Lac, interested?</text>
+    <polygon points="73,128 66,134 78,128" fill="#2563eb"/>
+  </svg>
+);
+
+const BuySVG = () => (
+  <svg viewBox="0 0 200 200" className="w-full h-full" fill="none">
+    <circle cx="100" cy="98" r="52" fill="#dcfce7"/>
+    <rect x="40" y="88" width="120" height="32" rx="6" fill="#16a34a"/>
+    <rect x="52" y="76" width="88" height="20" rx="5" fill="#15803d"/>
+    <rect x="56" y="78" width="80" height="16" rx="3" fill="#86efac" opacity="0.7"/>
+    <circle cx="62" cy="122" r="9" fill="#14532d"/>
+    <circle cx="62" cy="122" r="5" fill="#4ade80"/>
+    <circle cx="138" cy="122" r="9" fill="#14532d"/>
+    <circle cx="138" cy="122" r="5" fill="#4ade80"/>
+    <rect x="40" y="93" width="10" height="6" rx="3" fill="#fef08a"/>
+    <line x1="100" y1="88" x2="100" y2="120" stroke="#15803d" strokeWidth="1.5"/>
+    <circle cx="152" cy="68" r="18" fill="#fff" stroke="#16a34a" strokeWidth="2"/>
+    <circle cx="152" cy="68" r="13" fill="#16a34a"/>
+    <path d="M144 68 L150 74 L161 60" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M48 62 L58 57 L68 62 L68 72 Q68 78 58 82 Q48 78 48 72Z" fill="#fff" stroke="#16a34a" strokeWidth="1.5"/>
+    <path d="M52 70 L56 74 L64 64" stroke="#16a34a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+/* ─── Count-up hook ──────────────────────────────────────────── */
+function useCountUp(target: string, duration = 2000, start = false) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      setCount(Math.floor(progress * parseInt(target)));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [target, duration, start]);
+}
+
+
+/* ─── Main Component ─────────────────────────────────────────── */
+export default function SteeringLanding() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [statsInView, setStatsInView] = useState(false);
+  const [email, setEmail] = useState("");
+  const statsRef = useRef(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setStatsInView(true); },
+      { threshold: 0.3 }
+    );
+    if (statsRef.current) obs.observe(statsRef.current);
+    return () => obs.disconnect();
+  }, []);
+
 const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 50 },
+  initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
+  viewport: { once: true, margin: "-60px" },
   transition: {
-    duration: 0.8,
+    duration: 0.6,
     delay,
     ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
   },
 });
 
-export default function SteeringLanding() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [statsInView, setStatsInView] = useState(false);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
-  const statsRef = useRef(null);
-  const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 600], [0, 140]);
-  const heroOpacity = useTransform(scrollY, [0, 450], [1, 0]);
+  const SERVICES = [
+    {
+      icon: <Search size={28} />,
+      title: "Inspection Service",
+      desc: "Professional inspection to help you buy the right car with confidence.",
+      accent: { bg: "bg-green-50", text: "text-green-700", iconColor: "text-green-600", border: "border-green-200" }
+    },
+    {
+      icon: <FileCheck2 size={28} />,
+      title: "File Check Service",
+      desc: "We verify car documents to ensure everything is genuine and clear.",
+      accent: { bg: "bg-blue-50", text: "text-blue-700", iconColor: "text-blue-600", border: "border-blue-200" }
+    },
+    {
+      icon: <ArrowLeftRight size={28} />,
+      title: "File Transfer Service",
+      desc: "Hassle-free file transfer with complete support and guidance.",
+      accent: { bg: "bg-green-50", text: "text-green-700", iconColor: "text-green-600", border: "border-green-200" }
+    },
+    {
+      icon: <Wrench size={28} />,
+      title: "Maintenance Service",
+      desc: "From regular checkups to repairs – we keep your car in top shape.",
+      accent: { bg: "bg-blue-50", text: "text-blue-700", iconColor: "text-blue-600", border: "border-blue-200" }
+    },
+    {
+      icon: <Headphones size={28} />,
+      title: "Customer Support",
+      desc: "Our dedicated support team is always here to help you.",
+      accent: { bg: "bg-green-50", text: "text-green-700", iconColor: "text-green-600", border: "border-green-200" }
+    },
+  ];
 
-  useEffect(() => {
-    const t = setInterval(
-      () => setActiveTestimonial((p) => (p + 1) % TESTIMONIALS.length),
-      4500,
-    );
-    return () => clearInterval(t);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) setStatsInView(true);
-      },
-      { threshold: 0.3 },
-    );
-    if (statsRef.current) observer.observe(statsRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const STEPS = [
+    { title: "Explore Cars",                desc: "Browse thousands of verified ads with smart search and filters to find the perfect car.", img: <ExploreSVG /> },
+    { title: "Connect & Negotiate",         desc: "Connect directly with sellers, negotiate with confidence, and close the deal.",           img: <ConnectSVG /> },
+    { title: "Buy or Sell with Confidence", desc: "Whether you're buying or selling, The Steering makes the process simple, safe and secure.", img: <BuySVG /> },
+  ];
+const STATS = [
+  {
+    value: "1000+",
+    label: "Happy Customers",
+    color: "text-emerald-400",
+    accent: "from-emerald-500 to-emerald-300",
+    ring: "bg-emerald-500/10 text-emerald-400",
+    icon: <Users size={26} strokeWidth={1.6} />,
+  },
+  {
+    value: "2000+",
+    label: "Cars Listed",
+    color: "text-blue-400",
+    accent: "from-blue-500 to-blue-300",
+    ring: "bg-blue-500/10 text-blue-400",
+    icon: <Car size={26} strokeWidth={1.6} />,
+  },
+  {
+    value: "100%",
+    label: "Trusted Platform",
+    color: "text-emerald-400",
+    accent: "from-emerald-500 to-emerald-300",
+    ring: "bg-emerald-500/10 text-emerald-400",
+    icon: <BadgeCheck size={26} strokeWidth={1.6} />,
+  },
+  {
+    value: "1 City",
+    label: "Hyderabad, Sindh",
+    color: "text-emerald-400",
+    accent: "from-emerald-500 to-emerald-300",
+    ring: "bg-emerald-500/10 text-emerald-400",
+    icon: <Building2 size={26} strokeWidth={1.6} />,
+  },
+];
 
   return (
-    <div
-      style={{ fontFamily: "'Poppins', sans-serif" }}
-      className="bg-white text-gray-800 overflow-x-hidden"
-    >
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap"
-        rel="stylesheet"
-      />
-      <style>{`
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #010f1f; }
-        ::-webkit-scrollbar-thumb { background: #025194; border-radius: 3px; }
-        .glow-gold { filter: drop-shadow(0 0 20px rgba(255,215,0,0.5)); }
-        .text-gradient { background: linear-gradient(135deg, #025194 0%, #68a4d7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .card-shine { position: relative; overflow: hidden; }
-        .card-shine::after { content: ''; position: absolute; top: -50%; left: -60%; width: 30%; height: 200%; background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%); transform: skewX(-15deg); transition: left 0.7s ease; }
-        .card-shine:hover::after { left: 130%; }
-        .noise-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.015; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-        @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(12px)} }
-        @keyframes pulse-ring { 0%{transform:scale(0.8);opacity:1} 100%{transform:scale(2.2);opacity:0} }
-        .float { animation: float 3.5s ease-in-out infinite; }
-        .float2 { animation: float2 4s ease-in-out infinite; }
-        .pulse-ring { animation: pulse-ring 2s cubic-bezier(0.215,0.61,0.355,1) infinite; }
-        @keyframes shimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
-        .shimmer-text { background: linear-gradient(90deg, #025194 0%, #fff 40%, #025194 60%, #68a4d7 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 4s linear infinite; }
-        .nav-link { position: relative; }
-        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #025194; transition: width 0.3s ease; border-radius: 2px; }
-        .nav-link:hover::after { width: 100%; }
-      `}</style>
+    <div className="min-h-screen bg-white font-sans">
 
-      <div className="noise-overlay" />
+      {/* ══ NAV ══════════════════════════════════════════════════ */}
+      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
-      {/* ── NAVBAR ── */}
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{
-          duration: 0.8,
-          delay: 0.2,
-          ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-        }}
-        className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12"
-        style={{
-          paddingTop: scrolled ? "12px" : "20px",
-          paddingBottom: scrolled ? "12px" : "20px",
-          background: scrolled ? "rgba(1,15,31,0.95)" : "transparent",
-          backdropFilter: scrolled ? "blur(20px)" : "none",
-          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
-          transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)",
-        }}
-      >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <motion.div
-              whileHover={{ rotate: 5, scale: 1.1 }}
-              className="relative"
-            >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shadow-lg"
-                style={{
-                  background: "linear-gradient(135deg, #025194, #68a4d7)",
-                  color: "#010f1f",
-                }}
-              >
-                <MdDirectionsCar size={22} />
-              </div>
-              <div
-                className="absolute inset-0 rounded-xl opacity-40 blur-md"
-                style={{ background: "#025194" }}
-              />
-            </motion.div>
-            <div>
-              <span className="text-white font-black text-xl tracking-tight">
-                The Steering
-              </span>
-              <div className="text-[#68a4d7] text-[9px] font-semibold tracking-[0.2em] uppercase -mt-1">
-                Pakistan's #1 Car App
-              </div>
+          {/* Logo */}
+          <div className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-shrink-0">
+            <SteeringLogo size={36} />
+            <div className="leading-none">
+              <div className="text-[8px] font-bold tracking-[2px] text-gray-900">THE</div>
+              <div className="text-base sm:text-xl font-black text-gray-900 tracking-tight">STEERING.PK</div>
+              <div className="hidden sm:block text-[7px] text-gray-400 tracking-widest uppercase">YOUR JOURNEY, OUR COMMITMENT</div>
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map((link, i) => (
-              <motion.a
-                key={link.label}
-                href={link.href}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * i + 0.4 }}
-                className="nav-link flex items-center gap-1.5 text-blue-100 hover:text-[#68a4d7] text-sm font-medium transition-colors duration-200 cursor-pointer"
-              >
-                <span className="opacity-60 text-xs">{link.icon}</span>
-                {link.label}
-              </motion.a>
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+            {["Home", "Explore Ads", "Create Ad", "About Us"].map((l, i) => (
+              <a key={l} href="#" className={`text-sm font-medium transition-colors no-underline ${i === 0 ? "text-green-600 border-b-2 border-green-600 pb-0.5" : "text-gray-600 hover:text-green-600"}`}>
+                {l}
+              </a>
             ))}
           </div>
 
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8 }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 30px #748796",
-            }}
-            whileTap={{ scale: 0.97 }}
-            className="hidden md:flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200"
-            style={{
-              background: "linear-gradient(155deg, #025194, #68a4d7)",
-              color: "#010f1f",
-            }}
-          >
-            <FaGooglePlay size={14} />
-            Get App
-          </motion.button>
+          <div className="flex items-center gap-2">
+            <button className="hidden md:inline-flex py-2 px-4 items-center gap-1.5 bg-gradient-to-r from-green-400 to-[#0a1628] text-white text-xs font-semibold rounded-lg hover:from-green-500 hover:to-[#0a1628] transition-colors border-none cursor-pointer">
+              <BiBell size={16} />
+              Coming Soon
+            </button>
 
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden text-white p-2 rounded-lg"
-            style={{ background: "rgba(255,255,255,0.08)" }}
-          >
-            {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
-          </button>
+            <button className="md:hidden p-2 rounded-lg hover:bg-gray-100 border-none bg-transparent cursor-pointer" onClick={() => setMenuOpen(!menuOpen)}>
+              <div className="w-5 h-0.5 bg-gray-700 mb-1.5 transition-all" style={{ transform: menuOpen ? "rotate(45deg) translate(2px,2px)" : "none" }} />
+              <div className="w-5 h-0.5 bg-gray-700 mb-1.5" style={{ opacity: menuOpen ? 0 : 1 }} />
+              <div className="w-5 h-0.5 bg-gray-700" style={{ transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }} />
+            </button>
+          </div>
         </div>
-      </motion.nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.98 }}
-            className="fixed top-16 left-4 right-4 z-40 rounded-2xl p-5 flex flex-col gap-1"
-            style={{
-              background: "rgba(1,20,40,0.98)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              backdropFilter: "blur(20px)",
-            }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="md:hidden bg-white border-t border-gray-100 px-6 py-4 flex flex-col gap-4 shadow-lg"
           >
-            {NAV_LINKS.map((link, i) => (
-              <motion.a
-                key={link.label}
-                href={link.href}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.06 }}
-                onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-3 text-white text-base font-medium px-4 py-3 rounded-xl hover:bg-white/5 transition-all"
-              >
-                <span className="text-[#68a4d7]">{link.icon}</span>
-                {link.label}
-                <FiChevronRight className="ml-auto text-gray-500" />
-              </motion.a>
+            {["Home", "Explore Ads", "Create Ad", "About Us"].map((l) => (
+              <a key={l} href="#" className="text-sm font-medium text-gray-700 hover:text-green-600 no-underline py-1">{l}</a>
             ))}
-            <div className="mt-2 pt-2 border-t border-white/10">
-              <button
-                className="w-full flex items-center justify-center gap-2 font-bold py-3 rounded-xl text-sm"
-                style={{
-                  background: "linear-gradient(135deg, #025194, #68a4d7)",
-                  color: "#010f1f",
-                }}
-              >
-                <FaGooglePlay /> Download Free
-              </button>
-            </div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </nav>
 
-      {/* ── HERO ── */}
+      {/* ══ HERO ═════════════════════════════════════════════════ */}
       <section
-        className="relative min-h-screen flex items-center overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(160deg, #010a18 0%, #011a35 35%, #022d5c 70%, #033a7a 100%)",
-        }}
+        className="relative overflow-hidden"
+        style={{ backgroundImage: `url(${backgroundImg})`, backgroundSize: "cover", backgroundPosition: "bottom" }}
       >
-        {/* Animated background orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute top-[10%] right-[5%] w-[600px] h-[600px] rounded-full opacity-[0.07]"
-            style={{
-              background:
-                "radial-gradient(circle, #025194 0%, transparent 70%)",
-              filter: "blur(40px)",
-            }}
-          />
-          <div
-            className="absolute bottom-[5%] left-[0%] w-[500px] h-[500px] rounded-full opacity-[0.06]"
-            style={{
-              background:
-                "radial-gradient(circle, #0369a1 0%, transparent 70%)",
-              filter: "blur(50px)",
-            }}
-          />
-          <div
-            className="absolute top-[40%] left-[30%] w-[300px] h-[300px] rounded-full opacity-[0.04]"
-            style={{
-              background:
-                "radial-gradient(circle, #025194 0%, transparent 70%)",
-              filter: "blur(30px)",
-            }}
-          />
-        </div>
-
-        {/* Grid */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
+        <div className="absolute inset-0 z-0"
+          style={{ background: "linear-gradient(to right, #0a1628 5%, rgba(59,130,246,0.55) 40%, rgba(34,197,94,0.15) 65%, transparent 85%)" }}
         />
+        <div className="absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: "radial-gradient(circle,#fff 1px,transparent 1px)", backgroundSize: "28px 28px" }} />
+        <div className="absolute right-[-60px] top-1/2 -translate-y-[55%] w-72 h-72 sm:w-96 sm:h-96 lg:w-[500px] lg:h-[500px] rounded-full opacity-20"
+          style={{ background: "linear-gradient(135deg,#16a34a,#2563eb)" }} />
 
-        {/* Diagonal accent line */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute"
-            style={{
-              top: "15%",
-              right: "-5%",
-              width: "60%",
-              height: "1px",
-              background:
-                "linear-gradient(90deg, transparent, #81a9cb, transparent)",
-              transform: "rotate(-15deg)",
-            }}
-          />
-          <div
-            className="absolute"
-            style={{
-              bottom: "25%",
-              left: "-5%",
-              width: "50%",
-              height: "1px",
-              background:
-                "linear-gradient(90deg, transparent, #81a9cb, transparent)",
-              transform: "rotate(-15deg)",
-            }}
-          />
-        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-12 sm:py-16 lg:py-20 flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+          <motion.div className="flex-1 w-full max-w-xl text-center lg:text-left" {...fadeUp(0)}>
 
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-20 grid md:grid-cols-2 gap-12 items-center w-full"
-        >
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold mb-8"
-              style={{
-                background: "#81a9cb",
-                color: "#025194",
-                border: "1px solid rgb(113 158 196);",
-              }}
-            >
-              <HiSparkles />
-              Pakistan's Smartest Car Marketplace
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            </motion.div>
+            {/* Location pill */}
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded px-3 py-1.5 text-[10px] font-bold text-blue-200 tracking-widest uppercase mb-5">
+              <MapPin size={12} className="text-green-400" fill="#4ade80" />
+              Hyderabad, Sindh, Pakistan
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.3,
-                ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-              }}
-              className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.02] tracking-tight"
-            >
-              Drive Your
-              <br />
-              <span className="shimmer-text">Dream Car</span>
-              <br />
-              <span style={{ color: "rgba(147,197,253,0.8)" }}>Forward.</span>
-            </motion.h1>
+            <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-black leading-[1.1] text-white mb-5">
+              Hyderabad's Most<br />Trusted Platform<br />
+              for <span className="text-green-400">Cars</span>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
-              className="mt-6 text-base md:text-lg leading-relaxed max-w-md"
-              style={{ color: "rgba(147,197,253,0.7)" }}
-            >
-              Buy, sell, and explore cars smarter. Verified listings, real
-              market prices, and seamless deal-making — all in one app built for
-              Pakistan.
-            </motion.p>
+            <p className="text-base sm:text-lg text-blue-200 leading-relaxed mb-8 sm:mb-10">
+              Buy, sell and manage your car journey with confidence.<br className="hidden sm:block" />All in one place.
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.55 }}
-              className="mt-10 flex flex-wrap gap-4"
-            >
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 20px 60px rgba(255,215,0,0.35)",
-                }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-3 px-7 py-4 rounded-2xl font-bold text-sm transition-all duration-200 shadow-xl"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #025194 0%, #68a4d7 100%)",
-                  color: "#010f1f",
-                }}
-              >
-                <FaGooglePlay size={18} />
-                <div className="text-left">
-                  <div className="text-[9px] opacity-60 font-normal leading-none">
-                    Download on
-                  </div>
-                  <div className="leading-none mt-0.5">Google Play</div>
+            {/* Badges */}
+            <div className="flex flex-wrap justify-center lg:justify-start gap-3">
+              {[
+                { bg: "bg-green-600",  label: "Trusted\nPlatform",           icon: <ShieldCheck size={14} className="text-white" /> },
+                { bg: "bg-blue-600",   label: "Verified\nListings",          icon: <BadgeCheck size={14} className="text-white" /> },
+                { bg: "bg-cyan-600",   label: "Safe & Secure\nTransactions", icon: <ShieldCheck size={14} className="text-white" /> },
+              ].map(({ bg, label, icon }) => (
+                <div key={label} className="flex items-center gap-2.5 sm:gap-3 bg-white/10 border border-white/15 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5">
+                  <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>{icon}</div>
+                  <span className="text-white text-[11px] sm:text-xs font-semibold leading-tight whitespace-pre-line">{label}</span>
                 </div>
-              </motion.button>
-
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  borderColor: "rgba(255,255,255,0.4)",
-                }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-3 px-7 py-4 rounded-2xl font-bold text-sm transition-all duration-200"
-                style={{
-                  background: "rgba(255,255,255,0.06)",
-                  color: "#fff",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <FaApple size={20} />
-                <div className="text-left">
-                  <div className="text-[9px] opacity-60 font-normal leading-none">
-                    Download on
-                  </div>
-                  <div className="leading-none mt-0.5">App Store</div>
-                </div>
-              </motion.button>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.0 }}
-              className="mt-10 flex items-center gap-4"
-            >
-              <div className="flex -space-x-2.5">
-                {["AH", "SB", "MK", "FR"].map((init, i) => (
-                  <div
-                    key={i}
-                    className="w-9 h-9 rounded-full border-2 border-slate-900 flex items-center justify-center text-[10px] font-bold text-white"
-                    style={{
-                      background: ["#025194", "#0369a1", "#0ea5e9", "#38bdf8"][
-                        i
-                      ],
-                      zIndex: 4 - i,
-                    }}
-                  >
-                    {init}
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <BsFillStarFill
-                      key={i}
-                      size={11}
-                      className="text-[#68a4d7]"
-                    />
-                  ))}
-                  <span className="text-white text-xs font-bold ml-1">4.8</span>
-                </div>
-                <p
-                  style={{ color: "rgba(147,197,253,0.6)" }}
-                  className="text-xs"
-                >
-                  <span className="text-white font-semibold">200,000+</span>{" "}
-                  users trust The Steering
-                </p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Phone Mockup */}
-          <motion.div
-            initial={{ opacity: 0, x: 80, y: 20 }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex justify-center"
-          >
-            <div className="relative w-[290px] md:w-[340px]">
-              {/* Glow beneath phone */}
-              <div
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-32 opacity-30 blur-3xl"
-                style={{
-                  background: "radial-gradient(ellipse, #025194, transparent)",
-                }}
-              />
-
-              {/* Phone */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{
-                  duration: 0.8,
-                  repeat: Infinity,
-                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-                }}
-                className="relative w-full"
-              >
-                <div
-                  className="w-full aspect-[9/19.5] rounded-[3.5rem] overflow-hidden relative shadow-2xl"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, #011a35 0%, #022d5c 100%)",
-                    border: "8px solid rgba(255,255,255,0.12)",
-                    boxShadow:
-                      "0 40px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15)",
-                  }}
-                >
-                  {/* Notch */}
-                  <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-20 h-4 rounded-full bg-black/60 z-10" />
-
-                  {/* Status bar */}
-                  <div className="flex justify-between items-center px-5 pt-6 pb-2">
-                    <span className="text-white/60 text-[9px] font-semibold">
-                      9:41
-                    </span>
-                    <div className="flex gap-1 items-center">
-                      <div className="w-3 h-2 border border-white/40 rounded-[2px] relative">
-                        <div className="absolute inset-[2px] right-auto w-[60%] bg-green-400 rounded-[1px]" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="px-4 flex flex-col gap-2.5 h-full pb-8">
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-1">
-                      <div>
-                        <div className="text-white font-black text-base">
-                          The Steering
-                        </div>
-                        <div className="text-[#68a4d7] text-[9px] font-semibold">
-                          Find Your Perfect Car
-                        </div>
-                      </div>
-                      <div
-                        className="w-8 h-8 rounded-full flex items-center justify-center"
-                        style={{
-                          background: "#81a9cb",
-                          color: "#025194",
-                        }}
-                      >
-                        <FiUser size={14} />
-                      </div>
-                    </div>
-
-                    {/* Search bar */}
-                    <div
-                      className="flex items-center gap-2 rounded-xl px-3 py-2.5"
-                      style={{
-                        background: "rgba(255,255,255,0.07)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                      }}
-                    >
-                      <FiSearch size={12} className="text-[#68a4d7]" />
-                      <div className="text-white/40 text-[10px]">
-                        Search make, model, city...
-                      </div>
-                    </div>
-
-                    {/* Filter chips */}
-                    <div className="flex gap-1.5 overflow-hidden">
-                      {["All", "Sedan", "SUV", "Hatchback"].map((c, i) => (
-                        <div
-                          key={c}
-                          className="px-2.5 py-1 rounded-full text-[8px] font-semibold whitespace-nowrap"
-                          style={{
-                            background:
-                              i === 0 ? "#025194" : "rgba(255,255,255,0.06)",
-                            color:
-                              i === 0 ? "#010f1f" : "rgba(255,255,255,0.6)",
-                          }}
-                        >
-                          {c}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Car listings */}
-                    {[
-                      {
-                        name: "Toyota Corolla 2022",
-                        price: "Rs. 62L",
-                        tag: "Verified",
-                        tagColor: "#16a34a",
-                        km: "45,000 km",
-                      },
-                      {
-                        name: "Honda Civic 2023",
-                        price: "Rs. 88L",
-                        tag: "New",
-                        tagColor: "#025194",
-                        km: "12,000 km",
-                      },
-                      {
-                        name: "Suzuki Swift 2021",
-                        price: "Rs. 28L",
-                        tag: "Hot Deal",
-                        tagColor: "#dc2626",
-                        km: "60,000 km",
-                      },
-                    ].map((car, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.0 + i * 0.15 }}
-                        className="rounded-xl p-2.5 flex gap-2.5 items-center"
-                        style={{
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid rgba(255,255,255,0.07)",
-                        }}
-                      >
-                        <div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ background: "rgba(2,81,148,0.3)" }}
-                        >
-                          <RiCarLine size={18} className="text-blue-300" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-white text-[9px] font-bold truncate">
-                            {car.name}
-                          </div>
-                          <div className="text-[8px] text-blue-300 flex items-center gap-1">
-                            <MdSpeed size={8} />
-                            {car.km}
-                          </div>
-                          <div className="text-[#68a4d7] text-[10px] font-black mt-0.5">
-                            {car.price}
-                          </div>
-                        </div>
-                        <div
-                          className="text-[7px] px-2 py-0.5 rounded-full font-bold flex-shrink-0"
-                          style={{ background: car.tagColor, color: "#fff" }}
-                        >
-                          {car.tag}
-                        </div>
-                      </motion.div>
-                    ))}
-
-                    {/* Bottom nav */}
-                    <div
-                      className="mt-auto flex justify-around py-3 border-t"
-                      style={{ borderColor: "rgba(255,255,255,0.08)" }}
-                    >
-                      {[FiList, FiSearch, FiBarChart2, FiUser].map(
-                        (Icon, i) => (
-                          <div
-                            key={i}
-                            className="flex flex-col items-center gap-0.5"
-                          >
-                            <Icon
-                              size={16}
-                              style={{
-                                color:
-                                  i === 0 ? "#025194" : "rgba(255,255,255,0.3)",
-                              }}
-                            />
-                            <div
-                              className="w-1 h-1 rounded-full"
-                              style={{
-                                background: i === 0 ? "#025194" : "transparent",
-                              }}
-                            />
-                          </div>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Floating badges */}
-              <motion.div
-                className="float absolute -left-8 top-24 px-4 py-3 rounded-2xl shadow-2xl"
-                style={{
-                  background: "linear-gradient(135deg, #025194, #68a4d7)",
-                  minWidth: "140px",
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <BsCheckCircleFill className="text-green-700" size={14} />
-                  <div className="text-[#010f1f] text-xs font-bold">
-                    Verified Seller
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 mt-1">
-                  {[...Array(5)].map((_, i) => (
-                    <BsFillStarFill
-                      key={i}
-                      size={8}
-                      className="text-amber-700"
-                    />
-                  ))}
-                  <span className="text-[10px] text-amber-800 font-semibold ml-0.5">
-                    5.0
-                  </span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="float2 absolute -right-8 top-1/2 px-4 py-3 rounded-2xl shadow-2xl"
-                style={{
-                  background: "rgba(1,15,31,0.95)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  backdropFilter: "blur(20px)",
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <RiCarLine className="text-[#68a4d7]" size={14} />
-                  <div className="text-white text-xs font-bold">50K+ Cars</div>
-                </div>
-                <div className="text-blue-300 text-[9px] mt-0.5">
-                  Listed today
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="float absolute -right-5 bottom-20 px-4 py-3 rounded-2xl shadow-2xl"
-                style={{ background: "#16a34a", animationDelay: "1s" }}
-              >
-                <div className="flex items-center gap-1.5">
-                  <BsLightningChargeFill className="text-white" size={12} />
-                  <div className="text-white text-xs font-bold">
-                    Sold in 3 days!
-                  </div>
-                </div>
-              </motion.div>
+              ))}
             </div>
           </motion.div>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <div className="text-blue-400/60 text-[10px] tracking-widest uppercase font-semibold">
-            Scroll
-          </div>
-          <div className="w-5 h-8 rounded-full border border-blue-400/30 flex items-start justify-center p-1">
-            <div className="w-1 h-2 rounded-full bg-[#68a4d7] animate-bounce" />
-          </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* ── STATS BAND ── */}
-      <section
-        ref={statsRef}
-        className="py-16 relative overflow-hidden"
-        style={{
-          background: "linear-gradient(135deg, #010f1f 0%, #022d5c 100%)",
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, #025194 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-        />
-        <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-5 relative z-10">
-          {STATS.map((s, i) => (
-            <motion.div key={i}>
-              <StatCard
-                value={s.value}
-                label={s.label}
-                icon={s.icon}
-                inView={statsInView}
-              />
+      {/* ══ MORE THAN MARKETPLACE ════════════════════════════════ */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-white text-center">
+        <motion.div {...fadeUp(0)}>
+          <p className="text-[10px] font-bold tracking-[3px] text-green-600 uppercase mb-3">THE STEERING.PK</p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-3">More Than Just a Marketplace</h2>
+          <p className="text-sm sm:text-base text-gray-500 max-w-md mx-auto mb-12 sm:mb-14 leading-relaxed">
+            We go beyond buying and selling. The Steering.pk is your all-in-one solution for a smooth and secure car experience.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5 max-w-6xl mx-auto">
+          {SERVICES.map(({ icon, title, desc, accent }, i) => (
+            <motion.div
+              key={title}
+              {...fadeUp(i * 0.08)}
+              whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.08)" }}
+              className="bg-white border border-gray-200 rounded-2xl p-5 sm:p-7 text-center cursor-default transition-shadow"
+            >
+              <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full ${accent.bg} border ${accent.border} flex items-center justify-center mx-auto mb-4 sm:mb-5 ${accent.iconColor}`}>
+                {icon}
+              </div>
+              <h3 className={`text-xs sm:text-sm font-bold ${accent.text} mb-2`}>{title}</h3>
+              <p className="text-[11px] sm:text-xs text-gray-500 leading-relaxed">{desc}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* ── FEATURES ── */}
-      <section
-        id="features"
-        className="py-28 px-6 bg-white relative overflow-hidden"
-      >
-        <div
-          className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.025]"
-          style={{
-            background: "radial-gradient(circle, #025194, transparent)",
-            transform: "translate(30%, -30%)",
-          }}
-        />
+      {/* ══ FIND. CONNECT. DRIVE. ════════════════════════════════ */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-gray-50 text-center">
+        <motion.div {...fadeUp(0)}>
+          <p className="text-[10px] font-bold tracking-[3px] text-green-600 uppercase mb-3">ONE PLATFORM, ENDLESS POSSIBILITIES</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">Find. Connect. Drive.</h2>
+          <div className="w-10 h-0.5 bg-green-500 mx-auto mb-14 sm:mb-16" />
+        </motion.div>
 
-        <div className="max-w-6xl mx-auto relative z-10">
-          <motion.div {...fadeUp()} className="text-center mb-20">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold mb-5 tracking-widest uppercase"
-              style={{ background: "#e8f0ff", color: "#025194" }}
-            >
-              <BsLightningChargeFill />
-              Why The Steering
-            </div>
-            <h2
-              className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight"
-              style={{ color: "#010f1f" }}
-            >
-              Everything You Need
-              <br />
-              <span
-                style={{
-                  color: "#025194",
-                  fontStyle: "italic",
-                  fontWeight: 300,
-                }}
-              >
-                to Make the Right Move
-              </span>
-            </h2>
-            <p className="mt-4 text-gray-500 max-w-xl mx-auto text-base leading-relaxed">
-              Built with cutting-edge technology and deep local market knowledge
-              — The Steering is the tool serious buyers and sellers trust.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURES.map((f, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+          {STEPS.map(({ title, desc, img }, i) => {
+            const accents = [
+              { border: "border-t-green-500", badge: "bg-green-500", num: "text-green-600" },
+              { border: "border-t-[#0d2040]",  badge: "bg-[#0d2040]",  num: "text-[#0d2040]"  },
+              { border: "border-t-green-500", badge: "bg-green-500", num: "text-green-600" },
+            ];
+            const a = accents[i];
+            return (
               <motion.div
-                key={i}
-                {...fadeUp(i * 0.07)}
-                whileHover={{ y: -8, scale: 1.01 }}
-                className="card-shine p-8 rounded-3xl border transition-all duration-400 group cursor-default relative overflow-hidden"
-                style={{ background: "#fafbff", border: "1px solid #eef0f8" }}
+                key={title}
+                {...fadeUp(i * 0.12)}
+                className={`relative bg-white border border-gray-200 border-t-4 ${a.border} rounded-2xl p-6 sm:p-8 text-center shadow-sm hover:shadow-md transition-shadow`}
               >
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
-                  style={{ background: f.bg }}
-                />
-                <div className="relative z-10">
-                  <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
-                    style={{ background: f.bg, color: f.color }}
-                  >
-                    {f.icon}
-                  </div>
-                  <h3
-                    className="text-lg font-bold mb-2.5 transition-colors duration-300"
-                    style={{ color: "#010f1f" }}
-                  >
-                    {f.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">
-                    {f.desc}
-                  </p>
-                  <div
-                    className="mt-6 flex items-center gap-1.5 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
-                    style={{ color: f.color }}
-                  >
-                    Learn more <FiArrowRight size={12} />
-                  </div>
+                <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full ${a.badge} flex items-center justify-center shadow-md`}>
+                  <span className="text-white text-xs font-black">{i + 1}</span>
                 </div>
+                <div className="w-full h-36 bg-gray-50 rounded-xl mt-2 mb-6 flex items-center justify-center overflow-hidden border border-gray-100 p-3">
+                  {img}
+                </div>
+                <h3 className={`text-sm sm:text-base font-extrabold ${a.num} mb-2`}>{title}</h3>
+                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{desc}</p>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
+{/* ══ STATS ════════════════════════════════════════════════ */}
+<section
+  ref={statsRef}
+  className="py-12"
+  style={{ background: "linear-gradient(135deg,#0a1628 0%,#0d2040 100%)" }}
+>
+  <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
+    {STATS.map(({ value, label, accent, ring, icon }, i) => (
+      <StatCard
+        key={label}
+        value={value}
+        label={label}
+        accent={accent}
+        ring={ring}
+        icon={icon}
+        delay={i * 90}
+        inView={statsInView}
+      />
+    ))}
+  </div>
+</section>
+{/* ══ COMING SOON ══════════════════════════════════════════ */}
+<section className="py-16 sm:py-20 px-4 sm:px-6 bg-white">
+  <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
-      {/* ── HOW IT WORKS ── */}
-      <section
-        id="how-it-works"
-        className="py-28 px-6 relative overflow-hidden"
-        style={{
-          background: "linear-gradient(180deg, #f4f8ff 0%, #eef4ff 100%)",
-        }}
-      >
-        <div className="max-w-5xl mx-auto">
-          <motion.div {...fadeUp()} className="text-center mb-20">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold mb-5 tracking-widest uppercase"
-              style={{ background: "#025194", color: "#025194" }}
-            >
-              <RiSearchEyeLine />
-              How It Works
-            </div>
-            <h2
-              className="text-4xl md:text-5xl lg:text-6xl font-black"
-              style={{ color: "#010f1f" }}
-            >
-              Simple as <span style={{ color: "#025194" }}>1, 2, 3</span>
-            </h2>
-          </motion.div>
+    {/* LEFT — phone mockup */}
+    <motion.div
+      className="flex-shrink-0 relative flex justify-center items-center order-2 lg:order-1"
+      initial={{ opacity: 0, x: -40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {/* Glow blob */}
+      <div className="absolute left-[-40px] top-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle,rgba(22,163,74,0.18) 0%,rgba(37,99,235,0.10) 100%)" }} />
 
-          <div className="grid md:grid-cols-3 gap-10 relative">
-            {/* Connector line */}
-            <div
-              className="hidden md:block absolute top-[52px] left-[calc(16.67%+16px)] right-[calc(16.67%+16px)] h-0.5"
-              style={{
-                background:
-                  "linear-gradient(90deg, #025194 0%, #025194 50%, #025194 100%)",
-              }}
-            >
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-800" />
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-800" />
-            </div>
+      {/* Phone */}
+      <div className="relative z-10 w-40 sm:w-48 h-[300px] sm:h-[340px] rounded-[32px] sm:rounded-[36px] overflow-hidden"
+        style={{ background: "#111", border: "5px solid #1f2937" }}>
 
-            {STEPS.map((s, i) => (
-              <motion.div
-                key={i}
-                {...fadeUp(i * 0.15)}
-                className="text-center relative group"
-              >
-                <div className="relative w-28 h-28 mx-auto mb-7">
-                  {/* Pulse ring */}
-                  <div
-                    className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ border: "2px solid #025194" }}
-                  >
-                    <div
-                      className="absolute inset-0 rounded-full pulse-ring"
-                      style={{ border: "2px solid rgba(255,215,0,0.3)" }}
-                    />
-                  </div>
-                  <div
-                    className="w-full h-full rounded-full flex flex-col items-center justify-center relative z-10 shadow-xl"
-                    style={{
-                      background: "linear-gradient(135deg, #025194, #011a35)",
-                      border: "3px solid #748796",
-                      boxShadow: "0 20px 40px rgba(2,81,148,0.25)",
-                    }}
-                  >
-                    <div className="text-[#68a4d7]">{s.icon}</div>
-                    <div className="text-[#68a4d7]/50 text-[9px] font-black mt-0.5 tracking-widest">
-                      {s.num}
-                    </div>
-                  </div>
-                </div>
-                <h3
-                  className="text-lg font-black mb-3"
-                  style={{ color: "#010f1f" }}
-                >
-                  {s.title}
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
-                  {s.desc}
-                </p>
-              </motion.div>
-            ))}
+        {/* Notch */}
+        <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-10 h-[6px] rounded-full bg-[#1f2937]" />
+
+        <div className="w-full h-full flex flex-col items-center justify-center gap-3"
+          style={{ background: "linear-gradient(180deg,#0a1628 0%,#0d2040 100%)" }}>
+
+          <div className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center">
+            <SteeringLogo size={20} />
           </div>
 
-          {/* CTA below steps */}
-          <motion.div {...fadeUp(0.4)} className="mt-16 text-center">
-            <motion.button
-              whileHover={{
-                scale: 1.04,
-                boxShadow: "0 20px 50px rgba(2,81,148,0.3)",
-              }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-white transition-all"
-              style={{
-                background: "linear-gradient(135deg, #025194, #0369a1)",
-                boxShadow: "0 10px 30px rgba(2,81,148,0.2)",
-              }}
-            >
-              <FaGooglePlay size={16} />
-              Start for Free — Download Now
-              <FiArrowRight />
-            </motion.button>
-          </motion.div>
+          <div className="text-center">
+            <div className="text-[11px] font-extrabold text-white tracking-wide leading-snug">STEERING.PK</div>
+            <div className="text-[7px] text-blue-300 tracking-widest uppercase mt-0.5">Your Journey, Our Commitment</div>
+          </div>
+
+          <svg viewBox="0 0 160 80" width="110" fill="none">
+            <path d="M14 58 Q14 65 20 67 L140 67 Q146 65 146 58 L146 46 Q138 40 126 36 L116 18 Q110 10 98 8 L62 8 Q50 10 44 18 L34 36 Q20 40 16 46 Z" fill="#c8cdd4"/>
+            <path d="M40 36 L48 16 Q56 8 66 8 L94 8 Q104 8 112 16 L120 36 Z" fill="#9aa3b0"/>
+            <path d="M44 34 L50 18 Q56 10 68 8 L92 8 Q104 10 110 18 L116 34 Z" fill="#2a4a7a" opacity="0.8"/>
+            <circle cx="40" cy="67" r="12" fill="#222"/><circle cx="40" cy="67" r="7" fill="#555"/>
+            <circle cx="120" cy="67" r="12" fill="#222"/><circle cx="120" cy="67" r="7" fill="#555"/>
+          </svg>
+
+          {/* Progress dots */}
+          <div className="flex gap-1.5 mt-1">
+            <div className="w-7 h-1 rounded-full bg-white/50" />
+            <div className="w-2 h-1 rounded-full bg-white/15" />
+            <div className="w-2 h-1 rounded-full bg-white/15" />
+          </div>
         </div>
-      </section>
+      </div>
+    </motion.div>
 
-      {/* ── ABOUT ── */}
-      <section
-        id="about"
-        className="py-28 px-6 bg-white relative overflow-hidden"
-      >
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <motion.div {...fadeUp()}>
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold mb-6 tracking-widest uppercase"
-              style={{ background: "#e8f0ff", color: "#025194" }}
-            >
-              <HiOutlineBadgeCheck />
-              About Us
-            </div>
-            <h2
-              className="text-4xl md:text-5xl font-black leading-tight"
-              style={{ color: "#010f1f" }}
-            >
-              Pakistan's Most
-              <br />
-              Trusted Car
-              <br />
-              <span style={{ color: "#025194" }}>Market</span>
-              <span className="text-gradient">place</span>
-            </h2>
-            <p className="mt-6 text-gray-500 leading-relaxed text-[15px]">
-              The Steering was built for Pakistanis who deserve a better car
-              buying experience. No more shady deals, outdated listings, or
-              hidden fees. We combine cutting-edge technology with deep local
-              market knowledge to give you the most transparent, efficient, and
-              trustworthy platform in the country.
-            </p>
-            <p className="mt-4 text-gray-500 leading-relaxed text-[15px]">
-              Whether you're buying your first car or selling your fifth, The
-              Steering puts the power back in your hands.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-2.5">
-              {[
-                {
-                  label: "Verified Listings",
-                  icon: <FaCheckCircle size={12} />,
-                },
-                {
-                  label: "Car Inspection",
-                  icon: <FaClipboardCheck size={12} />,
-                },
-                {
-                  label: "Price Comparison",
-                  icon: <BsGraphUp size={12} />,
-                },
-                {
-                  label: "Secure Transactions",
-                  icon: <FaShieldAlt size={12} />,
-                },
-              ].map((tag) => (
-                <span
-                  key={tag.label}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold"
-                  style={{ background: "#e8f0ff", color: "#025194" }}
-                >
-                  {tag.icon}
-                  {tag.label}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+    {/* RIGHT — text */}
+    <motion.div className="flex-1 w-full text-center lg:text-left order-1 lg:order-2" {...fadeUp(0)}>
 
-          <motion.div {...fadeUp(0.2)} className="grid grid-cols-2 gap-4">
-            {ABOUT_CARDS.map((item, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.04, y: -4 }}
-                className="card-shine p-7 rounded-3xl flex flex-col gap-3 cursor-default"
-                style={{
-                  background: item.dark
-                    ? "linear-gradient(135deg, #025194, #011a35)"
-                    : "linear-gradient(135deg, #f0f6ff, #e8f0ff)",
-                  boxShadow: item.dark
-                    ? "0 20px 40px rgba(2,81,148,0.2)"
-                    : "0 8px 24px rgba(2,81,148,0.06)",
-                }}
-              >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{
-                    background: item.dark ? "#81a9cb" : "rgba(2,81,148,0.1)",
-                    color: item.dark ? "#025194" : "#025194",
-                  }}
-                >
-                  {item.icon}
-                </div>
-                <div
-                  className="text-3xl font-black"
-                  style={{ color: item.dark ? "#d8e3ec" : "#025194" }}
-                >
-                  {item.value}
-                </div>
-                <div
-                  className="text-xs font-medium"
-                  style={{
-                    color: item.dark ? "#d8e3ec" : "#6b7280",
-                  }}
-                >
-                  {item.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* Badge */}
+      <div className="inline-flex items-center gap-2 mb-4">
+        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+        <span className="text-[10px] font-bold tracking-[0.15em] text-green-600 uppercase">Coming Soon</span>
+      </div>
 
-      {/* ── TESTIMONIALS ── */}
-      <section
-        className="py-28 px-6 relative overflow-hidden"
-        style={{
-          background: "linear-gradient(180deg, #f4f8ff 0%, #eef4ff 100%)",
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, #025194 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+        A Simpler, Smarter Way<br />
+        to <span className="text-green-600">Buy, Sell</span> &amp; <span className="text-green-600">Manage</span> Cars.
+      </h2>
+
+      <p className="text-sm sm:text-base text-slate-500 leading-relaxed mb-8">
+        The Steering.pk app is on its way —<br className="hidden sm:block" /> get notified the moment we launch.
+      </p>
+
+      {/* Email input */}
+      <div className="flex max-w-md mx-auto lg:mx-0 rounded-xl overflow-hidden border border-slate-200">
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Enter your email address"
+          className="flex-1 px-4 py-3 sm:py-3.5 text-sm text-slate-600 outline-none bg-white placeholder-slate-400 border-none"
         />
+        <button className="bg-[#0a1628] hover:bg-[#162036] text-white px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide transition-colors whitespace-nowrap border-none cursor-pointer">
+          Notify Me
+        </button>
+      </div>
 
-        <div className="max-w-4xl mx-auto relative z-10">
-          <motion.div {...fadeUp()} className="text-center mb-16">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold mb-5 tracking-widest uppercase"
-              style={{ background: "#025194", color: "#025194" }}
-            >
-              <BsFillStarFill />
-              Testimonials
-            </div>
-            <h2
-              className="text-4xl md:text-5xl font-black"
-              style={{ color: "#010f1f" }}
-            >
-              What Our Users Say
-            </h2>
-          </motion.div>
+      {/* Store badges */}
+      <div className="flex gap-3 mt-4 justify-center lg:justify-start">
+        {[
+          { label: "App Store", icon: <FaApple size={15} /> },
+          { label: "Google Play", icon: <FaGooglePlay size={13} /> },
+        ].map(({ label, icon }) => (
+          <button key={label}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 hover:border-slate-400 text-slate-600 text-[11px] font-medium transition-colors cursor-pointer">
+            {icon} {label}
+          </button>
+        ))}
+      </div>
 
-          <div className="relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTestimonial}
-                initial={{ opacity: 0, y: 30, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -30, scale: 0.98 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="relative p-10 md:p-14 rounded-3xl shadow-2xl overflow-hidden"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #025194 0%, #011a35 100%)",
-                  boxShadow: "0 30px 80px rgba(2,81,148,0.3)",
-                }}
-              >
-                {/* Background quote */}
-                <div
-                  className="absolute top-6 right-8 text-[120px] font-black leading-none select-none"
-                  style={{ color: "rgba(255,215,0,0.06)" }}
-                >
-                  "
-                </div>
+    </motion.div>
+  </div>
+</section>
 
-                <div className="relative z-10">
-                  <div className="flex items-center gap-1 mb-6">
-                    {[...Array(TESTIMONIALS[activeTestimonial].rating)].map(
-                      (_, i) => (
-                        <BsFillStarFill
-                          key={i}
-                          size={16}
-                          className="text-[#68a4d7]"
-                        />
-                      ),
-                    )}
-                  </div>
+   {/* ══ FOOTER ═══════════════════════════════════════════════ */}
+<footer
+  className="text-white px-5 sm:px-8 pt-10 pb-5"
+  style={{ background: "#0a1628" }}
+>
+  <div className="max-w-6xl mx-auto">
 
-                  <p className="text-white text-lg md:text-xl leading-relaxed font-light max-w-2xl">
-                    {TESTIMONIALS[activeTestimonial].text}
-                  </p>
+    {/* Top row */}
+    <div className="flex flex-wrap items-center justify-between gap-6 pb-7 border-b border-white/[0.08]">
 
-                  <div className="mt-10 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-base shadow-lg"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #025194, #68a4d7)",
-                          color: "#010f1f",
-                        }}
-                      >
-                        {TESTIMONIALS[activeTestimonial].avatar}
-                      </div>
-                      <div>
-                        <div className="text-white font-bold text-base">
-                          {TESTIMONIALS[activeTestimonial].name}
-                        </div>
-                        <div
-                          className="flex items-center gap-1 mt-0.5"
-                          style={{ color: "rgba(147,197,253,0.7)" }}
-                        >
-                          <MdLocationOn size={12} />
-                          <span className="text-sm">
-                            {TESTIMONIALS[activeTestimonial].city}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="hidden sm:flex items-center gap-2">
-                      <div
-                        className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
-                        style={{ background: "rgba(255,255,255,0.08)" }}
-                        onClick={() =>
-                          setActiveTestimonial(
-                            (p) =>
-                              (p - 1 + TESTIMONIALS.length) %
-                              TESTIMONIALS.length,
-                          )
-                        }
-                      >
-                        <FiChevronRight
-                          size={16}
-                          className="text-white rotate-180"
-                        />
-                      </div>
-                      <div
-                        className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
-                        style={{
-                          background: "#81a9cb",
-                          color: "#025194",
-                        }}
-                        onClick={() =>
-                          setActiveTestimonial(
-                            (p) => (p + 1) % TESTIMONIALS.length,
-                          )
-                        }
-                      >
-                        <FiChevronRight size={16} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="flex justify-center gap-2.5 mt-8">
-              {TESTIMONIALS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveTestimonial(i)}
-                  className="transition-all duration-400"
-                  style={{
-                    width: i === activeTestimonial ? "32px" : "8px",
-                    height: "8px",
-                    borderRadius: "4px",
-                    background: i === activeTestimonial ? "#025194" : "#c7d8ed",
-                  }}
-                />
-              ))}
-            </div>
+      {/* Brand */}
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-white/70">
+          <SteeringLogo size={20} />
+        </div>
+        <div>
+          <div className="text-[15px] font-extrabold tracking-wide leading-none mb-[3px]">
+            STEERING.PK
+          </div>
+          <div className="text-[9px] text-white/30 tracking-widest uppercase">
+            Your Journey, Our Commitment
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── DOWNLOAD ── */}
-      <section
-        id="download"
-        className="py-28 px-6 relative overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(160deg, #010a18 0%, #011a35 40%, #022d5c 100%)",
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, #025194 1px, transparent 1px)",
-            backgroundSize: "50px 50px",
-          }}
-        />
-        <div
-          className="absolute top-[-150px] right-[-150px] w-[600px] h-[600px] rounded-full opacity-[0.08]"
-          style={{
-            background: "radial-gradient(circle, #025194, transparent)",
-            filter: "blur(40px)",
-          }}
-        />
-        <div
-          className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] rounded-full opacity-[0.06]"
-          style={{
-            background: "radial-gradient(circle, #0369a1, transparent)",
-            filter: "blur(40px)",
-          }}
-        />
+      {/* Nav */}
+      <nav className="flex gap-7 flex-wrap">
+        {["Explore Ads", "Create Ad", "About Us"].map((l) => (
+          <a
+            key={l}
+            href="#"
+            className="text-[13px] text-white/45 hover:text-white transition-colors no-underline"
+          >
+            {l}
+          </a>
+        ))}
+      </nav>
 
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <motion.div {...fadeUp()}>
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold mb-8 tracking-widest uppercase"
-              style={{
-                background: "#81a9cb",
-                color: "#025194",
-                border: "1px solid #81a9cb",
-              }}
+      {/* Social */}
+      <div className="flex flex-col items-end gap-2">
+        <span className="text-[11px] text-white/35 uppercase tracking-widest font-medium">
+          Follow Us
+        </span>
+        <div className="flex gap-2">
+          {[
+            { icon: <TbBrandFacebook size={15} />, href: "#", label: "Facebook" },
+            { icon: <AiOutlineInstagram size={15} />, href: "#", label: "Instagram" },
+            { icon: <FaWhatsapp size={14} />, href: "#", label: "WhatsApp" },
+          ].map(({ icon, href, label }) => (
+            <a
+              key={label}
+              href={href}
+              aria-label={label}
+              className="w-8 h-8 rounded-full border border-white/[0.12] bg-white/[0.05] hover:bg-green-600 hover:border-green-600 flex items-center justify-center text-white/60 hover:text-white transition-all no-underline"
             >
-              <FiDownload />
-              Available Now — Free
-            </div>
-
-            <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">
-              Download The Steering
-              <br />
-              <span className="shimmer-text">Start Your Journey</span>
-            </h2>
-
-            <p
-              className="mt-6 text-base max-w-xl mx-auto leading-relaxed"
-              style={{ color: "rgba(147,197,253,0.6)" }}
-            >
-              Join over 200,000 Pakistanis who already use The Steering to buy
-              and sell cars smarter, safer, and faster.
-            </p>
-
-            <div className="mt-12 flex flex-col sm:flex-row justify-center gap-5">
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 25px 60px rgba(255,215,0,0.3)",
-                }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-4 px-8 py-5 rounded-2xl font-semibold transition-all duration-200"
-                style={{
-                  background: "linear-gradient(135deg, #025194, #68a4d7)",
-                  color: "#010f1f",
-                  minWidth: "220px",
-                }}
-              >
-                <FaGooglePlay size={24} />
-                <div className="text-left">
-                  <div className="text-xs opacity-60 font-normal leading-none">
-                    Download on
-                  </div>
-                  <div className="text-lg font-black leading-tight mt-0.5">
-                    Google Play
-                  </div>
-                </div>
-              </motion.button>
-
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 25px 60px rgba(255,255,255,0.1)",
-                }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center gap-4 px-8 py-5 rounded-2xl font-semibold transition-all duration-200"
-                style={{
-                  background: "rgba(255,255,255,0.07)",
-                  color: "#fff",
-                  border: "1.5px solid rgba(255,255,255,0.2)",
-                  backdropFilter: "blur(10px)",
-                  minWidth: "220px",
-                }}
-              >
-                <FaApple size={26} />
-                <div className="text-left">
-                  <div className="text-xs opacity-60 font-normal leading-none">
-                    Download on
-                  </div>
-                  <div className="text-lg font-black leading-tight mt-0.5">
-                    App Store
-                  </div>
-                </div>
-              </motion.button>
-            </div>
-
-            <div className="mt-10 flex items-center justify-center gap-6 flex-wrap">
-              {[
-                { icon: <FiDownload size={14} />, text: "Free to download" },
-                { icon: <FaShieldAlt size={14} />, text: "No hidden charges" },
-                { icon: <BsFillStarFill size={14} />, text: "4.8★ rated" },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2"
-                  style={{ color: "rgba(147,197,253,0.6)" }}
-                >
-                  <span className="text-[#68a4d7]">{item.icon}</span>
-                  <span className="text-sm font-medium">{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+              {icon}
+            </a>
+          ))}
         </div>
-      </section>
+      </div>
+    </div>
 
-      {/* ── FOOTER ── */}
-      <footer
-        style={{
-          background: "#010a18",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-        }}
-        className="text-white py-16 px-6"
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-12">
-            <div className="md:col-span-1 md:justify-self-end">
-              <div className="flex items-center gap-3 mb-5">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
-                  style={{
-                    background: "linear-gradient(135deg, #025194, #68a4d7)",
-                    color: "#010f1f",
-                  }}
-                >
-                  <MdDirectionsCar size={20} />
-                </div>
-                <div>
-                  <div className="font-black text-xl">The Steering</div>
-                  <div className="text-[#68a4d7] text-[9px] font-semibold tracking-widest uppercase">
-                    Pakistan's #1 Car App
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-                Pakistan's smartest platform for buying and selling cars. Built
-                with love, trust, and technology.
-              </p>
-              <div className="flex gap-3 mt-6">
-                {[
-                  FiTwitter,
-                  FiInstagram,
-                  FiFacebook,
-                  FiLinkedin,
-                  FaWhatsapp,
-                ].map((Icon, i) => (
-                  <motion.a
-                    key={i}
-                    whileHover={{ scale: 1.15, y: -2 }}
-                    href="#"
-                    className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200"
-                    style={{
-                      background: "rgba(255,255,255,0.05)",
-                      color: "rgba(255,255,255,0.5)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                    }}
-                  >
-                    <Icon size={15} />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
+    {/* Bottom row */}
+    <div className="flex items-center justify-between pt-4 flex-wrap gap-2">
+      <span className="text-[11.5px] text-white/20">
+        © 2024 The Steering.pk. All rights reserved.
+      </span>
+      <span className="flex items-center gap-[5px] text-[10px] text-white/20">
+        <span className="w-[5px] h-[5px] rounded-full bg-green-500 opacity-70" />
+        Hyderabad, Sindh
+      </span>
+    </div>
 
-            {/* ── Download App Column ── */}
-            <div>
-              <h4 className="font-bold text-xs text-gray-400 mb-5 tracking-widest uppercase">
-                Download App
-              </h4>
-              <div className="flex flex-col gap-3">
-                <motion.a
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  href="#"
-                  className="flex w-[50%] items-center gap-2 px-4 py-3 rounded-xl transition-all duration-200"
-                  style={{
-                    background: "linear-gradient(135deg, #025194, #68a4d7)",
-                    color: "#010f1f",
-                    minWidth: "180px",
-                  }}
-                >
-                  <FaGooglePlay size={15} />
-                  <span className="text-sm font-medium">Google Play</span>
-                </motion.a>
+  </div>
+</footer>
 
-                <motion.a
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  href="#"
-                  className="flex items-center w-[50%] gap-2 px-4 py-3 rounded-xl transition-all duration-200"
-                  style={{
-                    background: "rgba(255,255,255,0.07)",
-                    color: "#fff",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    backdropFilter: "blur(10px)",
-                    minWidth: "180px",
-                  }}
-                >
-                  <FaApple size={15} />
-                  <span className="text-sm font-medium">App Store</span>
-                </motion.a>
-              </div>
-            </div>
-
-            {[
-              {
-                title: "Support",
-                links: [
-                  {
-                    label: "Help Center",
-                    icon: <RiCustomerServiceLine size={12} />,
-                    link: "*",
-                  },
-                  { label: "Contact Us", icon: <FiPhone size={12} />, link: "*" },
-                  { label: "Privacy Policy", icon: <FaShieldAlt size={12} />, link: "/privacy" },
-                  { label: "Terms & Conditions", icon: <FiList size={12} />, link: "/terms" },
-                ],
-              },
-            ].map((col) => (
-              <div key={col.title}>
-                <h4 className="font-bold text-xs text-gray-400 mb-5 tracking-widest uppercase">
-                  {col.title}
-                </h4>
-                <ul className="space-y-3">
-                  {col.links.map((l) => (
-                    <li key={l.label}>
-                      <a
-                        href={l.link}
-                        className="flex items-center gap-2 text-gray-400 text-sm hover:text-[#68a4d7] transition-colors group"
-                      >
-                        <span className="opacity-40 group-hover:opacity-100 transition-opacity">
-                          {l.icon}
-                        </span>
-                        {l.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-2">
-            <p className="text-gray-600 text-sm">
-              © 2026 The Steering. All rights reserved.
-            </p>
-            <div className="flex items-center gap-2">
-              <p className="text-gray-700 text-xs">
-                Made with ❤️ in Pakistan 🇵🇰
-              </p>
-              <div
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-gray-500 text-xs">
-                  All systems operational
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
