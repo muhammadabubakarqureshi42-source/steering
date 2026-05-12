@@ -79,7 +79,6 @@ const BuySVG = () => (
 
 /* ─── Main Component ─────────────────────────────────────────── */
 export default function SteeringLanding() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [statsInView, setStatsInView] = useState(false);
   const [email, setEmail] = useState("");
   const statsRef = useRef<HTMLElement>(null);
@@ -175,13 +174,7 @@ export default function SteeringLanding() {
 
 <img src={logo}  className="w-60  h-auto" />
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            {["Home", "Explore Ads", "Create Ad", "About Us"].map((l, i) => (
-              <a key={l} href="#" className={`text-sm font-medium transition-colors no-underline ${i === 0 ? "text-green-600 border-b-2 border-green-600 pb-0.5" : "text-gray-600 hover:text-green-600"}`}>
-                {l}
-              </a>
-            ))}
-          </div>
+   
 
           <div className="flex items-center gap-2">
             <button className="hidden md:inline-flex py-2 px-4 items-center  bg-gradient-to-r from-green-400 to-blue-950 text-white text-xs font-semibold rounded-lg hover:from-green-500 hover:to-[#0a1628] transition-colors border-none cursor-pointer">
@@ -189,25 +182,15 @@ export default function SteeringLanding() {
               Coming Soon
             </button>
 
-            <button className="md:hidden p-2 rounded-lg hover:bg-gray-100 border-none bg-transparent cursor-pointer" onClick={() => setMenuOpen(!menuOpen)}>
+            {/* <button className="md:hidden p-2 rounded-lg hover:bg-gray-100 border-none bg-transparent cursor-pointer" onClick={() => setMenuOpen(!menuOpen)}>
               <div className="w-5 h-0.5 bg-gray-700 mb-1.5 transition-all" style={{ transform: menuOpen ? "rotate(45deg) translate(2px,2px)" : "none" }} />
               <div className="w-5 h-0.5 bg-gray-700 mb-1.5" style={{ opacity: menuOpen ? 0 : 1 }} />
               <div className="w-5 h-0.5 bg-gray-700" style={{ transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }} />
-            </button>
+            </button> */}
           </div>
         </div>
 
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden bg-white border-t border-gray-100 px-6 py-4 flex flex-col gap-4 shadow-lg"
-          >
-            {["Home", "Explore Ads", "Create Ad", "About Us"].map((l) => (
-              <a key={l} href="#" className="text-sm font-medium text-gray-700 hover:text-green-600 no-underline py-1">{l}</a>
-            ))}
-          </motion.div>
-        )}
+
       </nav>
 
       {/* ══ HERO ═════════════════════════════════════════════════ */}
@@ -464,12 +447,7 @@ export default function SteeringLanding() {
       <img src={logo}  className="w-60  h-auto" />
 
 
-      {/* Nav */}
-      <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
-        {["Explore Ads", "Create Ad", "About Us"].map(l => (
-          <a key={l} href="#" className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors no-underline">{l}</a>
-        ))}
-      </div>
+      
 
       {/* Follow Us */}
       <div className="flex items-center gap-3">
