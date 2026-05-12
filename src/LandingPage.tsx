@@ -7,13 +7,11 @@ import {
   MapPin,  Search, FileCheck2,
   ArrowLeftRight, Wrench, Headphones,
   Users, Car, BadgeCheck, Building2,
-  Play,
 } from "lucide-react";
 
 import {  FaApple, FaWhatsapp } from "react-icons/fa";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { TbBrandFacebook } from "react-icons/tb";
-import { BsApple } from "react-icons/bs";
 
 /* ─── Steering Wheel Logo ─────────────────────────────────────── */
 
