@@ -383,7 +383,7 @@ const comingSoonRef = useRef<HTMLElement>(null);
 
     {/* Copyright */}
     <div className="border-t border-gray-100 pt-4 text-center text-xs text-gray-400">
-      © 2024 The Steering.pk. All rights reserved.
+      © 2026 The Steering.pk. All rights reserved.
     </div>
 
   </div>
