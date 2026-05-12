@@ -10,7 +10,7 @@ import {
   Play,
 } from "lucide-react";
 
-import {  FaWhatsapp } from "react-icons/fa";
+import {  FaApple, FaWhatsapp } from "react-icons/fa";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { TbBrandFacebook } from "react-icons/tb";
 import { BsApple } from "react-icons/bs";
@@ -212,20 +212,37 @@ const comingSoonRef = useRef<HTMLElement>(null);
               Buy, sell and manage your car journey with confidence.<br className="hidden sm:block" />All in one place.
             </p>
 
-           <div className="flex flex-wrap justify-center lg:justify-start gap-3">
-  {[
-    { bg: "bg-green-600", label: "Download\nApple Store", icon: <BsApple size={14} className="text-white" /> },
-    { bg: "bg-blue-950",  label: "Download\nPlay Store",  icon: <Play size={14} className="text-white" /> },
-  ].map(({ bg, label, icon }) => (
-    <div
-      key={label}
-      onClick={() => comingSoonRef.current?.scrollIntoView({ behavior: "smooth" })}
-      className="flex items-center gap-2.5 sm:gap-3 bg-white/10 border border-white/15 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 cursor-pointer"
-    >
-      <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>{icon}</div>
-      <span className="text-white text-[11px] sm:text-xs font-semibold leading-tight whitespace-pre-line">{label}</span>
+       <div className="flex flex-wrap justify-center lg:justify-start gap-3">
+
+  {/* App Store */}
+  <div
+    onClick={() => comingSoonRef.current?.scrollIntoView({ behavior: "smooth" })}
+    className="flex items-center gap-2.5 bg-black border border-white/10 rounded-xl px-4 py-2.5 cursor-pointer hover:bg-zinc-900 transition-colors"
+  >
+    <FaApple className="text-white text-2xl flex-shrink-0" />
+    <div className="flex flex-col items-start leading-tight">
+      <span className="text-white text-[9px] font-normal tracking-wide">Download on the</span>
+      <span className="text-white text-sm font-semibold">App Store</span>
     </div>
-  ))}
+  </div>
+
+  {/* Google Play */}
+  <div
+    onClick={() => comingSoonRef.current?.scrollIntoView({ behavior: "smooth" })}
+    className="flex items-center gap-2.5 bg-black border border-white/10 rounded-xl px-4 py-2.5 cursor-pointer hover:bg-zinc-900 transition-colors"
+  >
+    <svg viewBox="0 0 24 24" width="24" height="24" className="flex-shrink-0">
+      <path d="M3.18 23.76a2 2 0 0 0 2.18-.22l12.04-6.96-3.37-3.37L3.18 23.76z" fill="#EA4335"/>
+      <path d="M22.39 10.89 19.32 9.1l-3.67 3.67 3.67 3.67 3.1-1.8a2 2 0 0 0 0-3.75z" fill="#FBBC05"/>
+      <path d="M3.18.24 14.03 11.1l3.37-3.37L5.36.46A2 2 0 0 0 3.18.24z" fill="#4285F4"/>
+      <path d="M3.18.24a2 2 0 0 0-1.1 1.8v19.92a2 2 0 0 0 1.1 1.8l11.7-11.7L3.18.24z" fill="#34A853"/>
+    </svg>
+    <div className="flex flex-col items-start leading-tight">
+      <span className="text-white text-[9px] font-normal tracking-wide">GET IT ON</span>
+      <span className="text-white text-sm font-semibold">Google Play</span>
+    </div>
+  </div>
+
 </div>
           </motion.div>
         </div>
@@ -354,16 +371,23 @@ const comingSoonRef = useRef<HTMLElement>(null);
         </div>
       </section>
 
-   {/* ══ FOOTER ═══════════════════════════════════════════════ */}
-<footer className="text-gray-700 px-5 sm:px-8 pt-8 pb-5" style={{ background: "#f9fafb", borderTop: "1px solid #e5e7eb" }}>
+  {/* ══ FOOTER ═══════════════════════════════════════════════ */}
+<footer className="text-gray-700 px-5 sm:px-8 pt-8 pb-5">
   <div className="max-w-6xl mx-auto">
 
+    {/* Top section - logo etc */}
     <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 mb-5">
+      <div></div>
+    </div>
 
-      {/* Logo */}
-      <img src={logo} className="w-60 h-auto" />
+    {/* Bottom bar */}
+    <div className="border-t border-gray-100 pt-4 flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
+      {/* Left - Copyright */}
+      <p className="text-xs text-gray-400">
+        © 2026 The Steering.pk. All rights reserved.
+      </p>
 
-      {/* Follow Us */}
+      {/* Right - Follow Us */}
       <div className="flex items-center gap-3">
         <span className="text-xs text-gray-500 font-semibold">Follow Us</span>
         <div className="flex gap-2">
@@ -379,13 +403,8 @@ const comingSoonRef = useRef<HTMLElement>(null);
           ))}
         </div>
       </div>
-    </div>
 
-    {/* Copyright */}
-    <div className="border-t border-gray-100 pt-4 text-center text-xs text-gray-400">
-      © 2026 The Steering.pk. All rights reserved.
     </div>
-
   </div>
 </footer>
 
