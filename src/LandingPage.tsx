@@ -13,6 +13,7 @@ import { BiBell } from "react-icons/bi";
 import { FaWhatsapp } from "react-icons/fa";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { TbBrandFacebook } from "react-icons/tb";
+import { HiHome, HiLocationMarker, HiSearch, HiUser } from "react-icons/hi";
 
 /* ─── Steering Wheel Logo ─────────────────────────────────────── */
 
@@ -183,7 +184,7 @@ export default function SteeringLanding() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="hidden md:inline-flex py-2 px-4 items-center gap-1.5 bg-gradient-to-r from-green-400 to-[#0a1628] text-white text-xs font-semibold rounded-lg hover:from-green-500 hover:to-[#0a1628] transition-colors border-none cursor-pointer">
+            <button className="hidden md:inline-flex py-2 px-4 items-center  bg-gradient-to-r from-green-400 to-blue-950 text-white text-xs font-semibold rounded-lg hover:from-green-500 hover:to-[#0a1628] transition-colors border-none cursor-pointer">
               <BiBell size={16} />
               Coming Soon
             </button>
@@ -215,7 +216,7 @@ export default function SteeringLanding() {
         style={{ backgroundImage: `url(${backgroundImg})`, backgroundSize: "cover", backgroundPosition: "bottom" }}
       >
         <div className="absolute inset-0 z-0"
-          style={{ background: "linear-gradient(to right, #0a1628 5%, rgba(59,130,246,0.55) 40%, rgba(34,197,94,0.15) 65%, transparent 85%)" }}
+          style={{ background: "linear-gradient(to right, #0a1628 5%, #0a1628 30%, rgba(34,197,94,0.15) 65%, transparent 85%)" }}
         />
         <div className="absolute inset-0 opacity-[0.04]"
           style={{ backgroundImage: "radial-gradient(circle,#fff 1px,transparent 1px)", backgroundSize: "28px 28px" }} />
@@ -291,21 +292,25 @@ export default function SteeringLanding() {
     <div className="w-10 h-0.5 bg-green-500 mx-auto mb-14 sm:mb-16" />
   </motion.div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-    {STEPS.map(({ title, desc, img }, i) => (
-      <motion.div
-        key={title}
-        {...fadeUp(i * 0.12)}
-        className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 text-center shadow-sm hover:shadow-md transition-shadow"
-      >
-        <div className="w-full h-40 bg-gray-50 rounded-xl mb-6 flex items-center justify-center overflow-hidden border border-gray-100 p-3">
-          {img}
-        </div>
-        <h3 className="text-sm sm:text-base font-extrabold text-gray-900 mb-2">{title}</h3>
-        <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{desc}</p>
-      </motion.div>
-    ))}
-  </div>
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+  {STEPS.map(({ title, desc }, i) => (
+    <motion.div
+      key={title}
+      {...fadeUp(i * 0.12)}
+      className="bg-white rounded-2xl p-6 sm:p-8 text-center transition-shadow relative
+        sm:[&:not(:last-child)]:after:content-[''] 
+        sm:[&:not(:last-child)]:after:absolute 
+        sm:[&:not(:last-child)]:after:right-0 
+        sm:[&:not(:last-child)]:after:top-[10%] 
+        sm:[&:not(:last-child)]:after:h-[80%] 
+        sm:[&:not(:last-child)]:after:w-px 
+        sm:[&:not(:last-child)]:after:bg-gray-200"
+    >
+      <h3 className="text-sm sm:text-base font-extrabold text-gray-900 mb-2">{title}</h3>
+      <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{desc}</p>
+    </motion.div>
+  ))}
+</div>
 </section>
  <section
   ref={statsRef}
@@ -343,35 +348,86 @@ export default function SteeringLanding() {
       <section className="py-16 sm:py-20 px-4 sm:px-6 bg-white">
         <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
-          {/* LEFT — phone mockup */}
-          <motion.div
-            className="flex-shrink-0 relative flex justify-center items-center order-2 lg:order-1"
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-          >
-            <div className="absolute left-[-50px] sm:left-[-70px] top-1/2 -translate-y-1/2 w-56 h-56 sm:w-72 sm:h-72 rounded-full opacity-15"
-              style={{ background: "linear-gradient(135deg,#16a34a,#2563eb)", filter: "blur(1px)" }} />
-            <div className="relative z-10 w-44 sm:w-52 h-80 sm:h-96 rounded-[32px] sm:rounded-[36px] overflow-hidden shadow-2xl"
-              style={{ background: "#111", border: "6px solid #1f2937" }}>
-              <div className="w-full h-full flex flex-col items-center justify-center gap-4"
-                style={{ background: "linear-gradient(180deg,#0a1628 0%,#0d2040 100%)" }}>
-                {/* <SteeringLogo size={44} /> */}
-                <div className="text-center">
-                  <div className="text-xs font-black text-white tracking-wider">THE<br />STEERING.PK</div>
-                  <div className="text-[7px] text-blue-300 tracking-wide mt-1">YOUR JOURNEY, OUR COMMITMENT</div>
-                </div>
-                <svg viewBox="0 0 160 80" width="120" className="sm:w-[140px]" fill="none">
-                  <path d="M14 58 Q14 65 20 67 L140 67 Q146 65 146 58 L146 46 Q138 40 126 36 L116 18 Q110 10 98 8 L62 8 Q50 10 44 18 L34 36 Q20 40 16 46 Z" fill="#c8cdd4"/>
-                  <path d="M40 36 L48 16 Q56 8 66 8 L94 8 Q104 8 112 16 L120 36 Z" fill="#9aa3b0"/>
-                  <path d="M44 34 L50 18 Q56 10 68 8 L92 8 Q104 10 110 18 L116 34 Z" fill="#2a4a7a" opacity="0.8"/>
-                  <circle cx="40" cy="67" r="12" fill="#222"/><circle cx="40" cy="67" r="7" fill="#555"/>
-                  <circle cx="120" cy="67" r="12" fill="#222"/><circle cx="120" cy="67" r="7" fill="#555"/>
-                </svg>
-              </div>
-            </div>
-          </motion.div>
+        {/* LEFT — phone mockup */}
+<motion.div
+  className="flex-shrink-0 relative flex justify-center items-center order-2 lg:order-1"
+  initial={{ opacity: 0, x: -40 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+>
+  {/* Glow blobs */}
+  <div className="absolute w-72 h-72 rounded-full -z-10"
+    style={{ background: "radial-gradient(circle, rgba(22,163,74,0.18) 0%, transparent 70%)",
+      top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+  <div className="absolute w-44 h-44 rounded-full -z-10"
+    style={{ background: "radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)",
+      top: "20%", left: "10%" }} />
+
+  {/* Pulse rings */}
+  <div className=" absolute inset-0 rounded-[40px] border border-green-300/30
+    animate-[pulse-ring_2.5s_ease-out_infinite]" />
+
+  {/* Phone body */}
+  <div className="relative z-10 w-[190px] h-[390px] rounded-[36px] overflow-hidden
+    animate-[float_4s_ease-in-out_infinite_0.3s]"
+    style={{
+      background: "#0f172a",
+      border: "6px solid #1e293b",
+      boxShadow: "0 30px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)"
+    }}>
+
+    {/* Notch */}
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1.5 rounded-b-lg z-10"
+      style={{ background: "#1e293b" }} />
+
+    {/* Inner screen */}
+    <div className="w-full h-full bg-white flex flex-col items-center justify-center gap-4 relative">
+
+      {/* Top bar */}
+      <div className="absolute top-0 left-0 right-0 h-[70px] flex items-end justify-center pb-2"
+        style={{ background: "linear-gradient(135deg,#f0fdf4,#eff6ff)" }}>
+        <span className="text-[10px] font-bold tracking-widest text-green-600 uppercase">CarDrive</span>
+      </div>
+
+      {/* Logo — spinning */}
+      <img src={logo} className="w-14 h-auto mt-12 opacity-85 animate-spin-slow" />
+
+      {/* Car SVG */}
+      <svg viewBox="0 0 160 80" width="130" fill="none"
+        style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.12))" }}>
+        <path d="M14 58 Q14 65 20 67 L140 67 Q146 65 146 58 L146 46 Q138 40 126 36 L116 18 Q110 10 98 8 L62 8 Q50 10 44 18 L34 36 Q20 40 16 46 Z" fill="#c8cdd4"/>
+        <path d="M40 36 L48 16 Q56 8 66 8 L94 8 Q104 8 112 16 L120 36 Z" fill="#9aa3b0"/>
+        <path d="M44 34 L50 18 Q56 10 68 8 L92 8 Q104 10 110 18 L116 34 Z" fill="#2a4a7a" opacity="0.85"/>
+        <path d="M15 52 Q20 46 34 42 L40 36 L34 42 Q20 46 15 52 Z" fill="rgba(255,255,255,0.3)"/>
+        <circle cx="40" cy="67" r="12" fill="#1e293b"/>
+        <circle cx="40" cy="67" r="8" fill="#374151"/>
+        <circle cx="40" cy="67" r="3.5" fill="#6b7280"/>
+        <circle cx="120" cy="67" r="12" fill="#1e293b"/>
+        <circle cx="120" cy="67" r="8" fill="#374151"/>
+        <circle cx="120" cy="67" r="3.5" fill="#6b7280"/>
+      </svg>
+
+      {/* CTA Button */}
+      <div className="rounded-full px-7 py-2.5 text-[11px] font-bold text-white tracking-wide"
+        style={{
+          background: "linear-gradient(135deg,#16a34a,#15803d)",
+          boxShadow: "0 4px 14px rgba(22,163,74,0.4)"
+        }}>
+        Book Now
+      </div>
+
+    {/* Bottom nav */}
+<div className="absolute bottom-0 left-0 right-0 h-12 flex items-center justify-around px-4"
+  style={{ background: "linear-gradient(135deg,#f0fdf4,#eff6ff)" }}>
+  <HiHome className="text-green-600 text-lg" />
+  <HiSearch className="text-slate-400 text-lg" />
+  <HiLocationMarker className="text-slate-400 text-lg" />
+  <HiUser className="text-slate-400 text-lg" />
+</div>
+    </div>
+  </div>
+</motion.div>
 
           {/* RIGHT — text */}
           <motion.div className="flex-1 w-full text-center lg:text-left order-1 lg:order-2" {...fadeUp(0)}>
