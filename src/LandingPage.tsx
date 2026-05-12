@@ -4,17 +4,15 @@ import backgroundImg from "./assets/background.png";
 import logo from "./assets/logo.png"
 
 import {
-  MapPin, ShieldCheck, Search, FileCheck2,
+  MapPin,  Search, FileCheck2,
   ArrowLeftRight, Wrench, Headphones,
   Users, Car, BadgeCheck, Building2,
   Play,
 } from "lucide-react";
 
-import { BiBell } from "react-icons/bi";
-import { FaAppStore, FaWhatsapp } from "react-icons/fa";
+import {  FaWhatsapp } from "react-icons/fa";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { TbBrandFacebook } from "react-icons/tb";
-import { HiHome, HiLocationMarker, HiSearch, HiUser } from "react-icons/hi";
 import { BsApple } from "react-icons/bs";
 
 /* ─── Steering Wheel Logo ─────────────────────────────────────── */
