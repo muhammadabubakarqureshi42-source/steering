@@ -1,78 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import backgroundImg from "./assets/background.png";
+import logo from "./assets/logo.png"
 
-// lucide-react
 import {
   MapPin, ShieldCheck, Search, FileCheck2,
-  ArrowLeftRight, Wrench, Headphones, 
+  ArrowLeftRight, Wrench, Headphones,
   Users, Car, BadgeCheck, Building2,
 } from "lucide-react";
 
-// react-icons
 import { BiBell } from "react-icons/bi";
-import { FaApple, FaGooglePlay, FaWhatsapp } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { TbBrandFacebook } from "react-icons/tb";
 
 /* ─── Steering Wheel Logo ─────────────────────────────────────── */
-const SteeringLogo = ({ size = 44 }) => (
-  <svg width={size} height={size} viewBox="0 0 44 44" fill="none">
-    <circle cx="22" cy="22" r="20" stroke="#16a34a" strokeWidth="2.5" />
-    <circle cx="22" cy="22" r="6" stroke="#2563eb" strokeWidth="2" />
-    <line x1="22" y1="2"  x2="22" y2="16" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="22" y1="28" x2="22" y2="42" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="2"  y1="22" x2="16" y2="22" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="28" y1="22" x2="42" y2="22" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="5.5"  y1="8"  x2="16" y2="17" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="38.5" y1="8"  x2="28" y2="17" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="5.5"  y1="36" x2="16" y2="27" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="38.5" y1="36" x2="28" y2="27" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
 
-function StatCard({
-  value,
-  label,
-  icon,
-  accent,
-  ring,
-  delay,
-  inView,
-}: {
-  value: string;
-  label: string;
-  icon: React.ReactNode;
-  accent: string;
-  ring: string;
-  delay: number;
-  inView: boolean;
-}) {
-  return (
-    <div
-      className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.04] px-4 py-7 text-center transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(20px)",
-        transition: `opacity 0.45s ease ${delay}ms, transform 0.45s ease ${delay}ms, background 0.25s, border-color 0.25s`,
-      }}
-    >
-      <div className={`absolute inset-x-0 top-0 h-[2px] rounded-t-2xl bg-gradient-to-r ${accent} opacity-80`} />
-
-      <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${ring}`}>
-        {icon}
-      </div>
-
-      <p className="mb-2 text-[26px] font-semibold leading-none tracking-tight text-white">
-        {value}
-      </p>
-
-      <p className="text-[11.5px] font-medium uppercase tracking-widest text-white/40">
-        {label}
-      </p>
-    </div>
-  );
-}
 
 /* ─── Step Illustrations ─────────────────────────────────────── */
 const ExploreSVG = () => (
@@ -133,14 +76,12 @@ const BuySVG = () => (
   </svg>
 );
 
-
-
 /* ─── Main Component ─────────────────────────────────────────── */
 export default function SteeringLanding() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [statsInView, setStatsInView] = useState(false);
   const [email, setEmail] = useState("");
-  const statsRef = useRef(null);
+  const statsRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -151,16 +92,16 @@ export default function SteeringLanding() {
     return () => obs.disconnect();
   }, []);
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-60px" },
-  transition: {
-    duration: 0.6,
-    delay,
-    ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-  },
-});
+  const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: 24 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-60px" },
+    transition: {
+      duration: 0.6,
+      delay,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+    },
+  });
 
   const SERVICES = [
     {
@@ -200,40 +141,29 @@ const fadeUp = (delay = 0) => ({
     { title: "Connect & Negotiate",         desc: "Connect directly with sellers, negotiate with confidence, and close the deal.",           img: <ConnectSVG /> },
     { title: "Buy or Sell with Confidence", desc: "Whether you're buying or selling, The Steering makes the process simple, safe and secure.", img: <BuySVG /> },
   ];
-const STATS = [
-  {
-    value: "1000+",
-    label: "Happy Customers",
-    color: "text-emerald-400",
-    accent: "from-emerald-500 to-emerald-300",
-    ring: "bg-emerald-500/10 text-emerald-400",
-    icon: <Users size={26} strokeWidth={1.6} />,
-  },
-  {
-    value: "2000+",
-    label: "Cars Listed",
-    color: "text-blue-400",
-    accent: "from-blue-500 to-blue-300",
-    ring: "bg-blue-500/10 text-blue-400",
-    icon: <Car size={26} strokeWidth={1.6} />,
-  },
-  {
-    value: "100%",
-    label: "Trusted Platform",
-    color: "text-emerald-400",
-    accent: "from-emerald-500 to-emerald-300",
-    ring: "bg-emerald-500/10 text-emerald-400",
-    icon: <BadgeCheck size={26} strokeWidth={1.6} />,
-  },
-  {
-    value: "1 City",
-    label: "Hyderabad, Sindh",
-    color: "text-emerald-400",
-    accent: "from-emerald-500 to-emerald-300",
-    ring: "bg-emerald-500/10 text-emerald-400",
-    icon: <Building2 size={26} strokeWidth={1.6} />,
-  },
-];
+
+  const STATS = [
+    {
+      value: "1000+", label: "Happy Customers",
+      color: "text-green-400",
+      icon: <Users size={36} strokeWidth={1.8} />,
+    },
+    {
+      value: "2000+", label: "Cars Listed",
+      color: "text-blue-400",
+      icon: <Car size={36} strokeWidth={1.8} />,
+    },
+    {
+      value: "100%", label: "Trusted Platform",
+      color: "text-green-400",
+      icon: <BadgeCheck size={36} strokeWidth={1.8} />,
+    },
+    {
+      value: "1 City", label: "Hyderabad, Sindh",
+      color: "text-green-400",
+      icon: <Building2 size={36} strokeWidth={1.8} />,
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -242,17 +172,8 @@ const STATS = [
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
-          {/* Logo */}
-          <div className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-shrink-0">
-            <SteeringLogo size={36} />
-            <div className="leading-none">
-              <div className="text-[8px] font-bold tracking-[2px] text-gray-900">THE</div>
-              <div className="text-base sm:text-xl font-black text-gray-900 tracking-tight">STEERING.PK</div>
-              <div className="hidden sm:block text-[7px] text-gray-400 tracking-widest uppercase">YOUR JOURNEY, OUR COMMITMENT</div>
-            </div>
-          </div>
+<img src={logo}  className="w-60  h-auto" />
 
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {["Home", "Explore Ads", "Create Ad", "About Us"].map((l, i) => (
               <a key={l} href="#" className={`text-sm font-medium transition-colors no-underline ${i === 0 ? "text-green-600 border-b-2 border-green-600 pb-0.5" : "text-gray-600 hover:text-green-600"}`}>
@@ -304,7 +225,6 @@ const STATS = [
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-12 sm:py-16 lg:py-20 flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           <motion.div className="flex-1 w-full max-w-xl text-center lg:text-left" {...fadeUp(0)}>
 
-            {/* Location pill */}
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded px-3 py-1.5 text-[10px] font-bold text-blue-200 tracking-widest uppercase mb-5">
               <MapPin size={12} className="text-green-400" fill="#4ade80" />
               Hyderabad, Sindh, Pakistan
@@ -319,7 +239,6 @@ const STATS = [
               Buy, sell and manage your car journey with confidence.<br className="hidden sm:block" />All in one place.
             </p>
 
-            {/* Badges */}
             <div className="flex flex-wrap justify-center lg:justify-start gap-3">
               {[
                 { bg: "bg-green-600",  label: "Trusted\nPlatform",           icon: <ShieldCheck size={14} className="text-white" /> },
@@ -364,219 +283,148 @@ const STATS = [
         </div>
       </section>
 
-      {/* ══ FIND. CONNECT. DRIVE. ════════════════════════════════ */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-gray-50 text-center">
-        <motion.div {...fadeUp(0)}>
-          <p className="text-[10px] font-bold tracking-[3px] text-green-600 uppercase mb-3">ONE PLATFORM, ENDLESS POSSIBILITIES</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">Find. Connect. Drive.</h2>
-          <div className="w-10 h-0.5 bg-green-500 mx-auto mb-14 sm:mb-16" />
-        </motion.div>
+    {/* ══ FIND. CONNECT. DRIVE. ════════════════════════════════ */}
+<section className="py-16 sm:py-24 px-4 sm:px-6 bg-white text-center">
+  <motion.div {...fadeUp(0)}>
+    <p className="text-[10px] font-bold tracking-[3px] text-green-600 uppercase mb-3">ONE PLATFORM, ENDLESS POSSIBILITIES</p>
+    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">Find. Connect. Drive.</h2>
+    <div className="w-10 h-0.5 bg-green-500 mx-auto mb-14 sm:mb-16" />
+  </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-          {STEPS.map(({ title, desc, img }, i) => {
-            const accents = [
-              { border: "border-t-green-500", badge: "bg-green-500", num: "text-green-600" },
-              { border: "border-t-[#0d2040]",  badge: "bg-[#0d2040]",  num: "text-[#0d2040]"  },
-              { border: "border-t-green-500", badge: "bg-green-500", num: "text-green-600" },
-            ];
-            const a = accents[i];
-            return (
-              <motion.div
-                key={title}
-                {...fadeUp(i * 0.12)}
-                className={`relative bg-white border border-gray-200 border-t-4 ${a.border} rounded-2xl p-6 sm:p-8 text-center shadow-sm hover:shadow-md transition-shadow`}
-              >
-                <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full ${a.badge} flex items-center justify-center shadow-md`}>
-                  <span className="text-white text-xs font-black">{i + 1}</span>
-                </div>
-                <div className="w-full h-36 bg-gray-50 rounded-xl mt-2 mb-6 flex items-center justify-center overflow-hidden border border-gray-100 p-3">
-                  {img}
-                </div>
-                <h3 className={`text-sm sm:text-base font-extrabold ${a.num} mb-2`}>{title}</h3>
-                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{desc}</p>
-              </motion.div>
-            );
-          })}
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+    {STEPS.map(({ title, desc, img }, i) => (
+      <motion.div
+        key={title}
+        {...fadeUp(i * 0.12)}
+        className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 text-center shadow-sm hover:shadow-md transition-shadow"
+      >
+        <div className="w-full h-40 bg-gray-50 rounded-xl mb-6 flex items-center justify-center overflow-hidden border border-gray-100 p-3">
+          {img}
         </div>
-      </section>
-{/* ══ STATS ════════════════════════════════════════════════ */}
-<section
-  ref={statsRef}
-  className="py-12"
-  style={{ background: "linear-gradient(135deg,#0a1628 0%,#0d2040 100%)" }}
->
-  <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
-    {STATS.map(({ value, label, accent, ring, icon }, i) => (
-      <StatCard
-        key={label}
-        value={value}
-        label={label}
-        accent={accent}
-        ring={ring}
-        icon={icon}
-        delay={i * 90}
-        inView={statsInView}
-      />
+        <h3 className="text-sm sm:text-base font-extrabold text-gray-900 mb-2">{title}</h3>
+        <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{desc}</p>
+      </motion.div>
     ))}
   </div>
 </section>
-{/* ══ COMING SOON ══════════════════════════════════════════ */}
-<section className="py-16 sm:py-20 px-4 sm:px-6 bg-white">
-  <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-
-    {/* LEFT — phone mockup */}
-    <motion.div
-      className="flex-shrink-0 relative flex justify-center items-center order-2 lg:order-1"
-      initial={{ opacity: 0, x: -40 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {/* Glow blob */}
-      <div className="absolute left-[-40px] top-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle,rgba(22,163,74,0.18) 0%,rgba(37,99,235,0.10) 100%)" }} />
-
-      {/* Phone */}
-      <div className="relative z-10 w-40 sm:w-48 h-[300px] sm:h-[340px] rounded-[32px] sm:rounded-[36px] overflow-hidden"
-        style={{ background: "#111", border: "5px solid #1f2937" }}>
-
-        {/* Notch */}
-        <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-10 h-[6px] rounded-full bg-[#1f2937]" />
-
-        <div className="w-full h-full flex flex-col items-center justify-center gap-3"
-          style={{ background: "linear-gradient(180deg,#0a1628 0%,#0d2040 100%)" }}>
-
-          <div className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center">
-            <SteeringLogo size={20} />
-          </div>
-
-          <div className="text-center">
-            <div className="text-[11px] font-extrabold text-white tracking-wide leading-snug">STEERING.PK</div>
-            <div className="text-[7px] text-blue-300 tracking-widest uppercase mt-0.5">Your Journey, Our Commitment</div>
-          </div>
-
-          <svg viewBox="0 0 160 80" width="110" fill="none">
-            <path d="M14 58 Q14 65 20 67 L140 67 Q146 65 146 58 L146 46 Q138 40 126 36 L116 18 Q110 10 98 8 L62 8 Q50 10 44 18 L34 36 Q20 40 16 46 Z" fill="#c8cdd4"/>
-            <path d="M40 36 L48 16 Q56 8 66 8 L94 8 Q104 8 112 16 L120 36 Z" fill="#9aa3b0"/>
-            <path d="M44 34 L50 18 Q56 10 68 8 L92 8 Q104 10 110 18 L116 34 Z" fill="#2a4a7a" opacity="0.8"/>
-            <circle cx="40" cy="67" r="12" fill="#222"/><circle cx="40" cy="67" r="7" fill="#555"/>
-            <circle cx="120" cy="67" r="12" fill="#222"/><circle cx="120" cy="67" r="7" fill="#555"/>
-          </svg>
-
-          {/* Progress dots */}
-          <div className="flex gap-1.5 mt-1">
-            <div className="w-7 h-1 rounded-full bg-white/50" />
-            <div className="w-2 h-1 rounded-full bg-white/15" />
-            <div className="w-2 h-1 rounded-full bg-white/15" />
-          </div>
+ <section
+  ref={statsRef}
+  style={{ 
+    backgroundImage: `url(${backgroundImg})`, 
+    backgroundSize: "cover", 
+    backgroundPosition: "bottom" 
+  }}
+>
+  {/* Blue overlay */}
+  <div className="relative py-3">
+    <div className="absolute inset-0 bg-blue-950/70" />
+    
+    <div className="relative max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 border-t border-b border-white/[0.07]">
+      {STATS.map(({ value, label, color, icon }, i) => (
+        <div
+          key={label}
+          className={`flex flex-col items-center justify-center gap-3 py-10 px-4 text-center ${i < 3 ? "border-r border-white/10" : ""}`}
+          style={{
+            opacity: statsInView ? 1 : 0,
+            transform: statsInView ? "translateY(0)" : "translateY(16px)",
+            transition: `opacity 0.5s ease ${i * 100}ms, transform 0.5s ease ${i * 100}ms`,
+          }}
+        >
+          <div className={`${color} opacity-90`}>{icon}</div>
+          <div className={`text-3xl sm:text-4xl font-black ${color}`}>{value}</div>
+          <div className="text-xs text-white/50 uppercase tracking-widest font-medium">{label}</div>
         </div>
-      </div>
-    </motion.div>
-
-    {/* RIGHT — text */}
-    <motion.div className="flex-1 w-full text-center lg:text-left order-1 lg:order-2" {...fadeUp(0)}>
-
-      {/* Badge */}
-      <div className="inline-flex items-center gap-2 mb-4">
-        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-        <span className="text-[10px] font-bold tracking-[0.15em] text-green-600 uppercase">Coming Soon</span>
-      </div>
-
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
-        A Simpler, Smarter Way<br />
-        to <span className="text-green-600">Buy, Sell</span> &amp; <span className="text-green-600">Manage</span> Cars.
-      </h2>
-
-      <p className="text-sm sm:text-base text-slate-500 leading-relaxed mb-8">
-        The Steering.pk app is on its way —<br className="hidden sm:block" /> get notified the moment we launch.
-      </p>
-
-      {/* Email input */}
-      <div className="flex max-w-md mx-auto lg:mx-0 rounded-xl overflow-hidden border border-slate-200">
-        <input
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="Enter your email address"
-          className="flex-1 px-4 py-3 sm:py-3.5 text-sm text-slate-600 outline-none bg-white placeholder-slate-400 border-none"
-        />
-        <button className="bg-[#0a1628] hover:bg-[#162036] text-white px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold tracking-wide transition-colors whitespace-nowrap border-none cursor-pointer">
-          Notify Me
-        </button>
-      </div>
-
-      {/* Store badges */}
-      <div className="flex gap-3 mt-4 justify-center lg:justify-start">
-        {[
-          { label: "App Store", icon: <FaApple size={15} /> },
-          { label: "Google Play", icon: <FaGooglePlay size={13} /> },
-        ].map(({ label, icon }) => (
-          <button key={label}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 hover:border-slate-400 text-slate-600 text-[11px] font-medium transition-colors cursor-pointer">
-            {icon} {label}
-          </button>
-        ))}
-      </div>
-
-    </motion.div>
+      ))}
+    </div>
   </div>
 </section>
 
-   {/* ══ FOOTER ═══════════════════════════════════════════════ */}
-<footer
-  className="text-white px-5 sm:px-8 pt-10 pb-5"
-  style={{ background: "#0a1628" }}
->
+      {/* ══ COMING SOON ══════════════════════════════════════════ */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-white">
+        <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+
+          {/* LEFT — phone mockup */}
+          <motion.div
+            className="flex-shrink-0 relative flex justify-center items-center order-2 lg:order-1"
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+          >
+            <div className="absolute left-[-50px] sm:left-[-70px] top-1/2 -translate-y-1/2 w-56 h-56 sm:w-72 sm:h-72 rounded-full opacity-15"
+              style={{ background: "linear-gradient(135deg,#16a34a,#2563eb)", filter: "blur(1px)" }} />
+            <div className="relative z-10 w-44 sm:w-52 h-80 sm:h-96 rounded-[32px] sm:rounded-[36px] overflow-hidden shadow-2xl"
+              style={{ background: "#111", border: "6px solid #1f2937" }}>
+              <div className="w-full h-full flex flex-col items-center justify-center gap-4"
+                style={{ background: "linear-gradient(180deg,#0a1628 0%,#0d2040 100%)" }}>
+                {/* <SteeringLogo size={44} /> */}
+                <div className="text-center">
+                  <div className="text-xs font-black text-white tracking-wider">THE<br />STEERING.PK</div>
+                  <div className="text-[7px] text-blue-300 tracking-wide mt-1">YOUR JOURNEY, OUR COMMITMENT</div>
+                </div>
+                <svg viewBox="0 0 160 80" width="120" className="sm:w-[140px]" fill="none">
+                  <path d="M14 58 Q14 65 20 67 L140 67 Q146 65 146 58 L146 46 Q138 40 126 36 L116 18 Q110 10 98 8 L62 8 Q50 10 44 18 L34 36 Q20 40 16 46 Z" fill="#c8cdd4"/>
+                  <path d="M40 36 L48 16 Q56 8 66 8 L94 8 Q104 8 112 16 L120 36 Z" fill="#9aa3b0"/>
+                  <path d="M44 34 L50 18 Q56 10 68 8 L92 8 Q104 10 110 18 L116 34 Z" fill="#2a4a7a" opacity="0.8"/>
+                  <circle cx="40" cy="67" r="12" fill="#222"/><circle cx="40" cy="67" r="7" fill="#555"/>
+                  <circle cx="120" cy="67" r="12" fill="#222"/><circle cx="120" cy="67" r="7" fill="#555"/>
+                </svg>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT — text */}
+          <motion.div className="flex-1 w-full text-center lg:text-left order-1 lg:order-2" {...fadeUp(0)}>
+            <p className="text-[10px] font-bold tracking-[3px] text-green-600 uppercase mb-4">COMING SOON</p>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+              A Simpler, Smarter Way<br />
+              to <span className="text-green-600">Buy, Sell</span> &amp; <span className="text-green-600">Manage</span> Cars.
+            </h2>
+            <p className="text-sm sm:text-base text-gray-500 mb-1">The Steering.pk app is on the way.</p>
+            <p className="text-sm text-gray-400 mb-8">Stay tuned!</p>
+            <div className="flex max-w-md mx-auto lg:mx-0 rounded-lg overflow-hidden border border-gray-300 shadow-sm">
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                className="flex-1 px-4 py-3 sm:py-3.5 text-sm text-gray-600 outline-none bg-white placeholder-gray-400 border-none"
+              />
+              <button className="bg-[#0a1628] hover:bg-[#162036] text-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold transition-colors whitespace-nowrap border-none cursor-pointer">
+                Notify Me
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+     {/* ══ FOOTER ═══════════════════════════════════════════════ */}
+<footer className="text-white px-5 sm:px-8 pt-8 pb-5" style={{ background: "#0a1628" }}>
   <div className="max-w-6xl mx-auto">
 
-    {/* Top row */}
-    <div className="flex flex-wrap items-center justify-between gap-6 pb-7 border-b border-white/[0.08]">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 mb-5">
 
-      {/* Brand */}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-white/70">
-          <SteeringLogo size={20} />
-        </div>
-        <div>
-          <div className="text-[15px] font-extrabold tracking-wide leading-none mb-[3px]">
-            STEERING.PK
-          </div>
-          <div className="text-[9px] text-white/30 tracking-widest uppercase">
-            Your Journey, Our Commitment
-          </div>
-        </div>
-      </div>
+      {/* Logo */}
+      <img src={logo}  className="w-60  h-auto" />
+
 
       {/* Nav */}
-      <nav className="flex gap-7 flex-wrap">
-        {["Explore Ads", "Create Ad", "About Us"].map((l) => (
-          <a
-            key={l}
-            href="#"
-            className="text-[13px] text-white/45 hover:text-white transition-colors no-underline"
-          >
-            {l}
-          </a>
+      <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
+        {["Explore Ads", "Create Ad", "About Us"].map(l => (
+          <a key={l} href="#" className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors no-underline">{l}</a>
         ))}
-      </nav>
+      </div>
 
-      {/* Social */}
-      <div className="flex flex-col items-end gap-2">
-        <span className="text-[11px] text-white/35 uppercase tracking-widest font-medium">
-          Follow Us
-        </span>
+      {/* Follow Us */}
+      <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-400 font-semibold">Follow Us</span>
         <div className="flex gap-2">
           {[
-            { icon: <TbBrandFacebook size={15} />, href: "#", label: "Facebook" },
-            { icon: <AiOutlineInstagram size={15} />, href: "#", label: "Instagram" },
-            { icon: <FaWhatsapp size={14} />, href: "#", label: "WhatsApp" },
-          ].map(({ icon, href, label }) => (
-            <a
-              key={label}
-              href={href}
-              aria-label={label}
-              className="w-8 h-8 rounded-full border border-white/[0.12] bg-white/[0.05] hover:bg-green-600 hover:border-green-600 flex items-center justify-center text-white/60 hover:text-white transition-all no-underline"
-            >
+            { icon: <TbBrandFacebook size={15} />, href: "#" },
+            { icon: <AiOutlineInstagram size={15} />, href: "#" },
+            { icon: <FaWhatsapp size={14} />, href: "#" },
+          ].map(({ icon, href }, i) => (
+            <a key={i} href={href} className="w-8 h-8 rounded-full bg-white/10 hover:bg-green-600 flex items-center justify-center transition-colors no-underline text-white">
               {icon}
             </a>
           ))}
@@ -584,15 +432,9 @@ const STATS = [
       </div>
     </div>
 
-    {/* Bottom row */}
-    <div className="flex items-center justify-between pt-4 flex-wrap gap-2">
-      <span className="text-[11.5px] text-white/20">
-        © 2024 The Steering.pk. All rights reserved.
-      </span>
-      <span className="flex items-center gap-[5px] text-[10px] text-white/20">
-        <span className="w-[5px] h-[5px] rounded-full bg-green-500 opacity-70" />
-        Hyderabad, Sindh
-      </span>
+    {/* Copyright */}
+    <div className="border-t border-white/10 pt-4 text-center text-xs text-gray-600">
+      © 2024 The Steering.pk. All rights reserved.
     </div>
 
   </div>
