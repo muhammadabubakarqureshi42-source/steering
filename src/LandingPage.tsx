@@ -7,16 +7,17 @@ import {
   MapPin, ShieldCheck, Search, FileCheck2,
   ArrowLeftRight, Wrench, Headphones,
   Users, Car, BadgeCheck, Building2,
+  Play,
 } from "lucide-react";
 
 import { BiBell } from "react-icons/bi";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaAppStore, FaWhatsapp } from "react-icons/fa";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { TbBrandFacebook } from "react-icons/tb";
 import { HiHome, HiLocationMarker, HiSearch, HiUser } from "react-icons/hi";
+import { BsApple } from "react-icons/bs";
 
 /* ─── Steering Wheel Logo ─────────────────────────────────────── */
-
 
 /* ─── Step Illustrations ─────────────────────────────────────── */
 const ExploreSVG = () => (
@@ -164,6 +165,7 @@ export default function SteeringLanding() {
       icon: <Building2 size={36} strokeWidth={1.8} />,
     },
   ];
+const comingSoonRef = useRef<HTMLElement>(null);
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -176,18 +178,7 @@ export default function SteeringLanding() {
 
    
 
-          <div className="flex items-center gap-2">
-            <button className="hidden md:inline-flex py-2 px-4 items-center  bg-gradient-to-r from-green-400 to-blue-950 text-white text-xs font-semibold rounded-lg hover:from-green-500 hover:to-[#0a1628] transition-colors border-none cursor-pointer">
-              <BiBell size={16} />
-              Coming Soon
-            </button>
-
-            {/* <button className="md:hidden p-2 rounded-lg hover:bg-gray-100 border-none bg-transparent cursor-pointer" onClick={() => setMenuOpen(!menuOpen)}>
-              <div className="w-5 h-0.5 bg-gray-700 mb-1.5 transition-all" style={{ transform: menuOpen ? "rotate(45deg) translate(2px,2px)" : "none" }} />
-              <div className="w-5 h-0.5 bg-gray-700 mb-1.5" style={{ opacity: menuOpen ? 0 : 1 }} />
-              <div className="w-5 h-0.5 bg-gray-700" style={{ transform: menuOpen ? "rotate(-45deg) translate(2px,-2px)" : "none" }} />
-            </button> */}
-          </div>
+          
         </div>
 
 
@@ -211,7 +202,7 @@ export default function SteeringLanding() {
 
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded px-3 py-1.5 text-[10px] font-bold text-blue-200 tracking-widest uppercase mb-5">
               <MapPin size={12} className="text-green-400" fill="#4ade80" />
-              Hyderabad, Sindh, Pakistan
+              #Coming Soon
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-[52px] font-black leading-[1.1] text-white mb-5">
@@ -223,18 +214,21 @@ export default function SteeringLanding() {
               Buy, sell and manage your car journey with confidence.<br className="hidden sm:block" />All in one place.
             </p>
 
-            <div className="flex flex-wrap justify-center lg:justify-start gap-3">
-              {[
-                { bg: "bg-green-600",  label: "Trusted\nPlatform",           icon: <ShieldCheck size={14} className="text-white" /> },
-                { bg: "bg-blue-600",   label: "Verified\nListings",          icon: <BadgeCheck size={14} className="text-white" /> },
-                { bg: "bg-cyan-600",   label: "Safe & Secure\nTransactions", icon: <ShieldCheck size={14} className="text-white" /> },
-              ].map(({ bg, label, icon }) => (
-                <div key={label} className="flex items-center gap-2.5 sm:gap-3 bg-white/10 border border-white/15 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5">
-                  <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>{icon}</div>
-                  <span className="text-white text-[11px] sm:text-xs font-semibold leading-tight whitespace-pre-line">{label}</span>
-                </div>
-              ))}
-            </div>
+           <div className="flex flex-wrap justify-center lg:justify-start gap-3">
+  {[
+    { bg: "bg-green-600", label: "Download\nApple Store", icon: <BsApple size={14} className="text-white" /> },
+    { bg: "bg-blue-950",  label: "Download\nPlay Store",  icon: <Play size={14} className="text-white" /> },
+  ].map(({ bg, label, icon }) => (
+    <div
+      key={label}
+      onClick={() => comingSoonRef.current?.scrollIntoView({ behavior: "smooth" })}
+      className="flex items-center gap-2.5 sm:gap-3 bg-white/10 border border-white/15 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 cursor-pointer"
+    >
+      <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>{icon}</div>
+      <span className="text-white text-[11px] sm:text-xs font-semibold leading-tight whitespace-pre-line">{label}</span>
+    </div>
+  ))}
+</div>
           </motion.div>
         </div>
       </section>
@@ -328,89 +322,14 @@ export default function SteeringLanding() {
 </section>
 
       {/* ══ COMING SOON ══════════════════════════════════════════ */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-white">
+      <section ref={comingSoonRef} className="py-16 sm:py-20 px-4 sm:px-6 bg-white">
         <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
         {/* LEFT — phone mockup */}
-<motion.div
-  className="flex-shrink-0 relative flex justify-center items-center order-2 lg:order-1"
-  initial={{ opacity: 0, x: -40 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
->
-  {/* Glow blobs */}
-  <div className="absolute w-72 h-72 rounded-full -z-10"
-    style={{ background: "radial-gradient(circle, rgba(22,163,74,0.18) 0%, transparent 70%)",
-      top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
-  <div className="absolute w-44 h-44 rounded-full -z-10"
-    style={{ background: "radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)",
-      top: "20%", left: "10%" }} />
+<div>
+      <img src={logo}  className="w-120  h-auto" />
 
-  {/* Pulse rings */}
-  <div className=" absolute inset-0 rounded-[40px] border border-green-300/30
-    animate-[pulse-ring_2.5s_ease-out_infinite]" />
-
-  {/* Phone body */}
-  <div className="relative z-10 w-[190px] h-[390px] rounded-[36px] overflow-hidden
-    animate-[float_4s_ease-in-out_infinite_0.3s]"
-    style={{
-      background: "#0f172a",
-      border: "6px solid #1e293b",
-      boxShadow: "0 30px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.08)"
-    }}>
-
-    {/* Notch */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1.5 rounded-b-lg z-10"
-      style={{ background: "#1e293b" }} />
-
-    {/* Inner screen */}
-    <div className="w-full h-full bg-white flex flex-col items-center justify-center gap-4 relative">
-
-      {/* Top bar */}
-      <div className="absolute top-0 left-0 right-0 h-[70px] flex items-end justify-center pb-2"
-        style={{ background: "linear-gradient(135deg,#f0fdf4,#eff6ff)" }}>
-        <span className="text-[10px] font-bold tracking-widest text-green-600 uppercase">CarDrive</span>
-      </div>
-
-      {/* Logo — spinning */}
-      <img src={logo} className="w-14 h-auto mt-12 opacity-85 animate-spin-slow" />
-
-      {/* Car SVG */}
-      <svg viewBox="0 0 160 80" width="130" fill="none"
-        style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.12))" }}>
-        <path d="M14 58 Q14 65 20 67 L140 67 Q146 65 146 58 L146 46 Q138 40 126 36 L116 18 Q110 10 98 8 L62 8 Q50 10 44 18 L34 36 Q20 40 16 46 Z" fill="#c8cdd4"/>
-        <path d="M40 36 L48 16 Q56 8 66 8 L94 8 Q104 8 112 16 L120 36 Z" fill="#9aa3b0"/>
-        <path d="M44 34 L50 18 Q56 10 68 8 L92 8 Q104 10 110 18 L116 34 Z" fill="#2a4a7a" opacity="0.85"/>
-        <path d="M15 52 Q20 46 34 42 L40 36 L34 42 Q20 46 15 52 Z" fill="rgba(255,255,255,0.3)"/>
-        <circle cx="40" cy="67" r="12" fill="#1e293b"/>
-        <circle cx="40" cy="67" r="8" fill="#374151"/>
-        <circle cx="40" cy="67" r="3.5" fill="#6b7280"/>
-        <circle cx="120" cy="67" r="12" fill="#1e293b"/>
-        <circle cx="120" cy="67" r="8" fill="#374151"/>
-        <circle cx="120" cy="67" r="3.5" fill="#6b7280"/>
-      </svg>
-
-      {/* CTA Button */}
-      <div className="rounded-full px-7 py-2.5 text-[11px] font-bold text-white tracking-wide"
-        style={{
-          background: "linear-gradient(135deg,#16a34a,#15803d)",
-          boxShadow: "0 4px 14px rgba(22,163,74,0.4)"
-        }}>
-        Book Now
-      </div>
-
-    {/* Bottom nav */}
-<div className="absolute bottom-0 left-0 right-0 h-12 flex items-center justify-around px-4"
-  style={{ background: "linear-gradient(135deg,#f0fdf4,#eff6ff)" }}>
-  <HiHome className="text-green-600 text-lg" />
-  <HiSearch className="text-slate-400 text-lg" />
-  <HiLocationMarker className="text-slate-400 text-lg" />
-  <HiUser className="text-slate-400 text-lg" />
 </div>
-    </div>
-  </div>
-</motion.div>
 
           {/* RIGHT — text */}
           <motion.div className="flex-1 w-full text-center lg:text-left order-1 lg:order-2" {...fadeUp(0)}>
@@ -437,28 +356,26 @@ export default function SteeringLanding() {
         </div>
       </section>
 
-     {/* ══ FOOTER ═══════════════════════════════════════════════ */}
-<footer className="text-white px-5 sm:px-8 pt-8 pb-5" style={{ background: "#0a1628" }}>
+   {/* ══ FOOTER ═══════════════════════════════════════════════ */}
+<footer className="text-gray-700 px-5 sm:px-8 pt-8 pb-5" style={{ background: "#f9fafb", borderTop: "1px solid #e5e7eb" }}>
   <div className="max-w-6xl mx-auto">
 
     <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 mb-5">
 
       {/* Logo */}
-      <img src={logo}  className="w-60  h-auto" />
-
-
-      
+      <img src={logo} className="w-60 h-auto" />
 
       {/* Follow Us */}
       <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-400 font-semibold">Follow Us</span>
+        <span className="text-xs text-gray-500 font-semibold">Follow Us</span>
         <div className="flex gap-2">
           {[
             { icon: <TbBrandFacebook size={15} />, href: "#" },
             { icon: <AiOutlineInstagram size={15} />, href: "#" },
             { icon: <FaWhatsapp size={14} />, href: "#" },
           ].map(({ icon, href }, i) => (
-            <a key={i} href={href} className="w-8 h-8 rounded-full bg-white/10 hover:bg-green-600 flex items-center justify-center transition-colors no-underline text-white">
+            <a key={i} href={href}
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-green-600 hover:text-white flex items-center justify-center transition-colors no-underline text-gray-600">
               {icon}
             </a>
           ))}
@@ -467,7 +384,7 @@ export default function SteeringLanding() {
     </div>
 
     {/* Copyright */}
-    <div className="border-t border-white/10 pt-4 text-center text-xs text-gray-600">
+    <div className="border-t border-gray-100 pt-4 text-center text-xs text-gray-400">
       © 2024 The Steering.pk. All rights reserved.
     </div>
 
