@@ -76,8 +76,38 @@ const BuySVG = () => (
 
 /* ─── Main Component ─────────────────────────────────────────── */
 export default function SteeringLanding() {
-  const [statsInView, setStatsInView] = useState(false);
+
   const [email, setEmail] = useState("");
+const [loading, setLoading] = useState(false);
+const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+
+const handleNotify = async () => {
+  if (!email || !email.includes("@")) return;
+  
+  setLoading(true);
+  setStatus("idle");
+  
+  try {
+    const res = await fetch("YOUR_API_URL_HERE", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    if (res.ok) {
+      setStatus("success");
+      setEmail("");
+    } else {
+      setStatus("error");
+    }
+  } catch {
+    setStatus("error");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const [statsInView, setStatsInView] = useState(false);
   const statsRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -166,18 +196,15 @@ const comingSoonRef = useRef<HTMLElement>(null);
   return (
     <div className="min-h-screen bg-white font-sans">
 
-      {/* ══ NAV ══════════════════════════════════════════════════ */}
+    {/* ══ NAV ══════════════════════════════════════════════ */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-
-<img src={logo}  className="w-60  h-auto" />
-
-   
-
-          
+          <img
+            src={logo}
+            className="w-40 h-auto cursor-pointer"
+            
+          />
         </div>
-
-
       </nav>
 
       {/* ══ HERO ═════════════════════════════════════════════════ */}
@@ -353,57 +380,77 @@ const comingSoonRef = useRef<HTMLElement>(null);
             </h2>
             <p className="text-sm sm:text-base text-gray-500 mb-1">The Steering.pk app is on the way.</p>
             <p className="text-sm text-gray-400 mb-8">Stay tuned!</p>
-            <div className="flex max-w-md mx-auto lg:mx-0 rounded-lg overflow-hidden border border-gray-300 shadow-sm">
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 sm:py-3.5 text-sm text-gray-600 outline-none bg-white placeholder-gray-400 border-none"
-              />
-              <button className="bg-[#0a1628] hover:bg-[#162036] text-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold transition-colors whitespace-nowrap border-none cursor-pointer">
-                Notify Me
-              </button>
-            </div>
+            <div className="flex flex-col gap-2 max-w-md mx-auto lg:mx-0">
+  <div className="flex rounded-lg overflow-hidden border border-gray-300 shadow-sm">
+    <input
+      type="email"
+      value={email}
+      onChange={e => { setEmail(e.target.value); setStatus("idle"); }}
+      onKeyDown={e => e.key === "Enter" && handleNotify()}
+      placeholder="Enter your email address"
+      disabled={loading}
+      className="flex-1 px-4 py-3 sm:py-3.5 text-sm text-gray-600 outline-none bg-white placeholder-gray-400 border-none disabled:opacity-60"
+    />
+    <button
+      onClick={handleNotify}
+      disabled={loading || !email}
+      className="bg-[#0a1628] hover:bg-[#162036] disabled:opacity-50 text-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold transition-colors whitespace-nowrap border-none cursor-pointer"
+    >
+      {loading ? "Sending..." : "Notify Me"}
+    </button>
+  </div>
+
+  {/* Status messages */}
+  {status === "success" && (
+    <p className="text-xs text-green-600 font-medium">✅ Done! We'll notify you when we launch.</p>
+  )}
+  {status === "error" && (
+    <p className="text-xs text-red-500 font-medium">❌ Something went wrong. Please try again.</p>
+  )}
+</div>
           </motion.div>
         </div>
       </section>
 
   {/* ══ FOOTER ═══════════════════════════════════════════════ */}
 <footer className="text-gray-700 px-5 sm:px-8 pt-8 pb-5">
-  <div className="max-w-6xl mx-auto">
+ {/* Bottom bar */}
+<div className="border-t border-gray-100 pt-4 flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
+  
+  {/* Left - Copyright */}
+  <p className="text-xs text-gray-400">
+    © 2026 The Steering.pk. All rights reserved.
+  </p>
 
-    {/* Top section - logo etc */}
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 mb-5">
-      <div></div>
-    </div>
+  {/* Center - Links */}
+  <div className="flex items-center gap-4">
+    <a href="/terms" className="text-xs text-gray-500 hover:text-green-600 transition-colors no-underline">
+      Terms & Conditions
+    </a>
+    <span className="text-gray-300 text-xs">|</span>
+    <a href="/privacy" className="text-xs text-gray-500 hover:text-green-600 transition-colors no-underline">
+      Privacy & Policy
+    </a>
+  </div>
 
-    {/* Bottom bar */}
-    <div className="border-t border-gray-100 pt-4 flex flex-col-reverse sm:flex-row items-center justify-between gap-3">
-      {/* Left - Copyright */}
-      <p className="text-xs text-gray-400">
-        © 2026 The Steering.pk. All rights reserved.
-      </p>
-
-      {/* Right - Follow Us */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-500 font-semibold">Follow Us</span>
-        <div className="flex gap-2">
-          {[
-            { icon: <TbBrandFacebook size={15} />, href: "#" },
-            { icon: <AiOutlineInstagram size={15} />, href: "#" },
-            { icon: <FaWhatsapp size={14} />, href: "#" },
-          ].map(({ icon, href }, i) => (
-            <a key={i} href={href}
-              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-green-600 hover:text-white flex items-center justify-center transition-colors no-underline text-gray-600">
-              {icon}
-            </a>
-          ))}
-        </div>
-      </div>
-
+  {/* Right - Follow Us */}
+  <div className="flex items-center gap-3">
+    <span className="text-xs text-gray-500 font-semibold">Follow Us</span>
+    <div className="flex gap-2">
+      {[
+        { icon: <TbBrandFacebook size={15} />, href: "#" },
+        { icon: <AiOutlineInstagram size={15} />, href: "#" },
+        { icon: <FaWhatsapp size={14} />, href: "#" },
+      ].map(({ icon, href }, i) => (
+        <a key={i} href={href}
+          className="w-8 h-8 rounded-full bg-gray-100 hover:bg-green-600 hover:text-white flex items-center justify-center transition-colors no-underline text-gray-600">
+          {icon}
+        </a>
+      ))}
     </div>
   </div>
+
+</div>
 </footer>
 
     </div>
