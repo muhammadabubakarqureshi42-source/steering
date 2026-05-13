@@ -12,6 +12,8 @@ import {
 import {  FaApple, FaWhatsapp } from "react-icons/fa";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { TbBrandFacebook } from "react-icons/tb";
+import { Toaster } from "sonner";
+import { toast } from "sonner";
 
 /* ─── Steering Wheel Logo ─────────────────────────────────────── */
 
@@ -76,37 +78,40 @@ const BuySVG = () => (
 
 /* ─── Main Component ─────────────────────────────────────────── */
 export default function SteeringLanding() {
-
   const [email, setEmail] = useState("");
 const [loading, setLoading] = useState(false);
-const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const API_URL  = `${BACKEND_URL}/waitlist`;
+  
 const handleNotify = async () => {
-  if (!email || !email.includes("@")) return;
-  
+  if (!isValidEmail(email)) return;
   setLoading(true);
-  setStatus("idle");
-  
+
   try {
-    const res = await fetch("YOUR_API_URL_HERE", {
+    const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
 
     if (res.ok) {
-      setStatus("success");
       setEmail("");
+      toast.success("You're on the waitlist!", {
+        description: `We'll notify you when we launch.` ,
+      });
     } else {
-      setStatus("error");
+      toast.error("Registration failed.", {
+        description: "Please try again in a moment.",
+      });
     }
   } catch {
-    setStatus("error");
+    toast.error("Network error.", {
+      description: "Check your connection and try again.",
+    });
   } finally {
     setLoading(false);
   }
 };
-
   const [statsInView, setStatsInView] = useState(false);
   const statsRef = useRef<HTMLElement>(null);
 
@@ -192,9 +197,16 @@ const handleNotify = async () => {
     },
   ];
 const comingSoonRef = useRef<HTMLElement>(null);
+// Yeh helper function add karo handleNotify se pehle
+const isValidEmail = (val: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
 
   return (
     <div className="min-h-screen bg-white font-sans">
+          <Toaster
+      position="top-right"
+        // nav ke neeche aaye
+    />
 
     {/* ══ NAV ══════════════════════════════════════════════ */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
@@ -385,28 +397,20 @@ const comingSoonRef = useRef<HTMLElement>(null);
     <input
       type="email"
       value={email}
-      onChange={e => { setEmail(e.target.value); setStatus("idle"); }}
+      onChange={e => { setEmail(e.target.value); }}
       onKeyDown={e => e.key === "Enter" && handleNotify()}
       placeholder="Enter your email address"
       disabled={loading}
       className="flex-1 px-4 py-3 sm:py-3.5 text-sm text-gray-600 outline-none bg-white placeholder-gray-400 border-none disabled:opacity-60"
     />
-    <button
-      onClick={handleNotify}
-      disabled={loading || !email}
-      className="bg-[#0a1628] hover:bg-[#162036] disabled:opacity-50 text-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold transition-colors whitespace-nowrap border-none cursor-pointer"
-    >
-      {loading ? "Sending..." : "Notify Me"}
-    </button>
+   <button
+  onClick={handleNotify}
+  disabled={loading || !isValidEmail(email)}
+  className="bg-[#0a1628] hover:bg-[#162036] disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-bold transition-colors whitespace-nowrap border-none cursor-pointer"
+>
+  {loading ? "Sending..." : "Notify Me"}
+</button>
   </div>
-
-  {/* Status messages */}
-  {status === "success" && (
-    <p className="text-xs text-green-600 font-medium">✅ Done! We'll notify you when we launch.</p>
-  )}
-  {status === "error" && (
-    <p className="text-xs text-red-500 font-medium">❌ Something went wrong. Please try again.</p>
-  )}
 </div>
           </motion.div>
         </div>

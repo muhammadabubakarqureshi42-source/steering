@@ -82,7 +82,7 @@ export default function ViewAdPage() {
     
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const AD_ID    = id; // use the ID from the URL
-    const API_URL  = `${BACKEND_URL}/${AD_ID}`;
+    const API_URL  = `${BACKEND_URL}/user-ads/${AD_ID}`;
     const [ad, setAd] = useState<any>(null);
   const [loading, setLoading]     = useState(true);
   const [error, setError] = useState<string | null>(null);
